@@ -1,10 +1,42 @@
 [
   {
-    "name": "上海采购中心网",
-    "url": "http://www.shzfcg.gov.cn/"
+    "name": "上海市政府采购中心网",
+    "url": "http://www.shzfcg.gov.cn/",
+    "subUrls": [
+      {
+        "name": "采购公告",
+        "url": "http://www.shzfcg.gov.cn:8090/new_web/cjxx/center_hz.jsp"
+      },
+      {
+        "name": "澄清公告",
+        "url": "http://www.shzfcg.gov.cn:8090/new_web/cjxx/center_hz_cd.jsp"
+      }
+    ]
   },
   {
     "name": "北京市政府采购中心",
-    "url": "http://www.bgpc.gov.cn/"
+    "url": "http://www.bgpc.gov.cn/",
+    "subUrls": [
+      {
+        "name": "招标公告",
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/29"
+      },
+      {
+        "name": "直采（非招标公告）",
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/31"
+      },
+      {
+        "name": "更正公告",
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/30"
+      },
+      {
+        "name": "中标公告",
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/32"
+      },
+      {
+        "name": "废标公告",
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/33"
+      }
+    ]
   }
 ]
