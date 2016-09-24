@@ -1,5 +1,5 @@
 [
-  {
+    {
     "name": "北京市政府采购中心",
     "url": "http://www.bgpc.gov.cn/",
     "subUrls": [
@@ -22,6 +22,20 @@
       {
         "name": "废标公告",
         "url": "http://www.bgpc.gov.cn/news/news/nt_id/33"
+      }
+    ]
+  },
+  {
+    "name": "上海市政府采购中心网",
+    "url": "http://www.shzfcg.gov.cn:8090/new_web/cjxx/center_hz.jsp",
+    "subUrls": [
+      {
+        "name": "采购公告",
+        "url": "http://www.shzfcg.gov.cn:8090/new_web/cjxx/center_hz.jsp"
+      },
+      {
+        "name": "澄清公告",
+        "url": "http://www.shzfcg.gov.cn:8090/new_web/cjxx/center_hz_cd.jsp"
       }
     ]
   }
