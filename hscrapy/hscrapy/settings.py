@@ -18,3 +18,4 @@ PROJECT_PATH = os.path.dirname(__file__)
 
 PS_CONFIG = PROJECT_PATH + os.sep + "pc.json"
 DEST_DIR = PROJECT_PATH + os.sep + "dist"
+SUBWAY_CONFIG = PROJECT_PATH + os.sep + "subway.json"
