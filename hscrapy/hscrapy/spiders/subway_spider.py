@@ -30,13 +30,13 @@ class News163Spider(scrapy.Spider):
 	def process_distance_table(self, distances, lineName):
 		for disItem in distances:
 			th = disItem.xpath("th")[0]
-			stationName = th.xpath("text()").extract[0]
-			distance = disItem.xpath("td/text()").extract[0]
+			stationName = th.xpath("text()").extract()[0]
+			distance = disItem.xpath("td/text()").extract()[0]
 			disItem = {
-				"station": stationName,
-				"distance": distance
+				"name": stationName,
+				"length": distance
 			}
-			self.log(str(disItem))
+			self.log("name: %s: %d" % (stationName.encode("utf-8"), int(distance)))
 
 	def get_line_name(self, td):
 		return td.xpath("text()").extract()[0]
@@ -49,7 +49,7 @@ class News163Spider(scrapy.Spider):
 		for table in tables:
 			head = table.xpath("thead/tr/td")[0]
 			lineName = self.get_line_name(head)
+			self.log(lineName)
 
 			distances = table.xpath("tbody/tr")
 			self.process_distance_table(distances, lineName)
-			self.log(lineName)
