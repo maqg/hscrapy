@@ -1,8 +1,33 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import os
 import scrapy
 
 from hscrapy.settings import PS_CONFIG, DEST_DIR
 from hscrapy.utils.commonUtil import fileToObj
+
+
+KEYWORDS = [
+	u"云计算",
+	u"虚拟化",
+	u"信息化",
+	u"大数据",
+	u"云课堂",
+	u"云办公",
+	u"桌面云",
+	u"私有云",
+	u"公有云",
+	u"云安全",
+	u"审计",
+	u"瘦终端",
+	u"瘦客户机",
+	u"一体机",
+	u"IaaS",
+	u"SaaS",
+	u"云教学",
+	u"教育云"
+]
 
 
 class News163Spider(scrapy.Spider):
@@ -13,6 +38,13 @@ class News163Spider(scrapy.Spider):
 	urlList = []
 
 	titles = {}
+
+	def matchRules(self, title):
+		for rule in KEYWORDS:
+			if (title.find(rule) != -1):
+				self.log("matched rule %s for title %s" % (rule, title))
+				return True
+		return False
 
 	def getTitle(self, url):
 		return self.titles.get(url)
@@ -136,7 +168,6 @@ class News163Spider(scrapy.Spider):
 		self.log(baseUrl)
 
 		urls = response.xpath("//a")
-		#urls = response.xpath("//a/@href").extract()
 
 		for url in urls:
 			names = url.xpath("text()").extract()
@@ -145,6 +176,9 @@ class News163Spider(scrapy.Spider):
 
 			name = names[0]
 			if (not name or name == "<"): # no name specified
+				continue
+
+			if (not self.matchRules(name)):
 				continue
 
 			href = url.xpath("@href").extract()[0]
@@ -158,23 +192,3 @@ class News163Spider(scrapy.Spider):
 			}
 			self.titles[subUrl] = title
 			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
-
-	def xxxx(self, response):
-
-		body = response.body
-		baseUrl = response.url
-
-		bodies = body.replace(" ", "").replace("\t", "").split("\n")
-		for line in bodies:
-			if (line.startswith("<!")):
-				continue
-			if (len(line)) > 10 and line.find("<ahref") != -1:
-				items = line.split("\"")
-				if (len(items) < 2):
-					continue
-				if (not items[1].startswith("http")):
-					subUrl = baseUrl + items[1]
-				else:
-					subUrl = items[1]
-				print(subUrl)
-				yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
