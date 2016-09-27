@@ -5,10 +5,12 @@ import json
 import os
 import socket
 import struct
+import sys
 import uuid
 from hashlib import md5 as MD5
 
-import time
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 from hscrapy.utils.timeUtil import get_current_time
 

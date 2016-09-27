@@ -146,7 +146,7 @@ class News163Spider(scrapy.Spider):
 			self.log("this url already exist, just skip it %s" % response.url)
 			return
 
-		fd = open(dstPath, "a+")
+		fd = open(dstPath, "w+")
 		fd.write(response.body)
 		fd.close()
 
@@ -158,7 +158,7 @@ class News163Spider(scrapy.Spider):
 	</script>
 </html>
 """ % response.url
-			fd = open(dstUrlPath, "a+")
+			fd = open(dstUrlPath, "w+")
 			fd.write(content)
 			fd.close()
 
