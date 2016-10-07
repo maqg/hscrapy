@@ -46,25 +46,71 @@ class SubwaySpider(scrapy.Spider):
 
 	def start_requests(self):
 
-		yield scrapy.http.Request(url=self.url_timetable, callback=self.parseTimeTable)
+		yield scrapy.http.Request(url=self.url_disance, callback=self.parseDistance)
 
-		#yield scrapy.http.Request(url=self.url_disance, callback=self.parse_distance)
+		yield scrapy.http.Request(url=self.url_timetable, callback=self.parseTimeTable)
 
 		self.write()
 
+	def getStation(self, line, stationName):
+		for station in line["stations"]:
+			name = station["name"]
+			if (name == stationName + ""):
+				return station
+		return None
 
-	def processTimeTable(self, time_tables, line):
-		pass
+
+	def processTimeTable(self, time_tables, line, lastTrain):
+
+		items = time_tables.xpath("tr")
+		for item in items:
+			stationTable = item.xpath("th")[0]
+			stationName = stationTable.xpath("text()").extract()[0]
+
+			station = self.getStation(line, stationName)
+			if (not station):
+				self.log("got station from line error %s" % stationName)
+				continue
+
+			station["lastTrain"] = lastTrain
+
+			timeValues = item.xpath("td")
+			columes = len(lastTrain)
+
+			index = 0
+			for timeTable in timeValues:
+				timeValue = timeTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "")
+				position = index / columes
+				lastTrain[position]["first"] = timeValue
+				index += 1
 
 	def findLine(self, lineName):
+
 		for line in self.lines:
 			if (line["name"] == lineName):
 				return line
 		return None
 
 	def getTitles(self, table, lineName):
-		pass
 
+		lastTrain = []
+
+		settingType = getParseType(lineName)
+		if (settingType == TIME_TABLE_TYPE_NORMAL):
+			items = table.xpath("thead/tr/td")[2:]
+		else:
+			items = table.xpath("thead/tr/td")[2:]
+
+		for item in items:
+			value = item.xpath("text()").extract()[0]
+			self.log(value)
+			timeTable = {
+				"direction": value
+			}
+
+			lastTrain.append(timeTable)
+
+		return lastTrain
 
 	def parseTimeTable(self, response):
 
@@ -78,12 +124,10 @@ class SubwaySpider(scrapy.Spider):
 
 			line = self.findLine(lineName)
 
-			time_tables = table.xpath("tbody/tr")
-			self.processTimeTable(time_tables, line)
-
+			time_tables = table.xpath("tbody")[0]
+			self.processTimeTable(time_tables, line, titles)
 
 		self.write()
-		pass
 
 
 	def processDistance(self, distances, line):
