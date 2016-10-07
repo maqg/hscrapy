@@ -10,7 +10,19 @@ import json
 from hscrapy.utils.commonUtil import transToStr
 
 
-class News163Spider(scrapy.Spider):
+TIME_TABLE_TYPE_NORMAL = {}
+
+
+timeTableSettings = {
+	"1号线": TIME_TABLE_TYPE_NORMAL,
+}
+
+
+def getParseType(lineName):
+	return timeTableSettings.get(lineName) or TIME_TABLE_TYPE_NORMAL
+
+
+class SubwaySpider(scrapy.Spider):
 
 	name = "subway"
 
@@ -34,18 +46,47 @@ class News163Spider(scrapy.Spider):
 
 	def start_requests(self):
 
-		yield scrapy.http.Request(url=self.url_timetable, callback=self.parse_timetable)
+		yield scrapy.http.Request(url=self.url_timetable, callback=self.parseTimeTable)
 
-		yield scrapy.http.Request(url=self.url_disance, callback=self.parse_distance)
+		#yield scrapy.http.Request(url=self.url_disance, callback=self.parse_distance)
 
 		self.write()
 
 
-	def parse_timetable(self, response):
+	def processTimeTable(self, time_tables, line):
+		pass
+
+	def findLine(self, lineName):
+		for line in self.lines:
+			if (line["name"] == lineName):
+				return line
+		return None
+
+	def getTitles(self, table, lineName):
 		pass
 
 
-	def process_distance_table(self, distances, line):
+	def parseTimeTable(self, response):
+
+		tables = response.xpath("//table")
+		for table in tables:
+			head = table.xpath("thead/tr/td")[0]
+			lineName = self.getLineName(head)
+			self.log(lineName)
+
+			titles = self.getTitles(table, lineName)
+
+			line = self.findLine(lineName)
+
+			time_tables = table.xpath("tbody/tr")
+			self.processTimeTable(time_tables, line)
+
+
+		self.write()
+		pass
+
+
+	def processDistance(self, distances, line):
 		lastStationName = "NotSet"
 		stationId = 1
 		for disItem in distances:
@@ -58,7 +99,7 @@ class News163Spider(scrapy.Spider):
 			station = {
 				"id": line["id"] * 1000 + stationId,
 				"name": stationName,
-				"length": distance
+				"length": int(distance)
 			}
 			line["stations"].append(station)
 			self.log("name: %s: %d" % (stationName.encode("utf-8"), int(distance)))
@@ -75,17 +116,17 @@ class News163Spider(scrapy.Spider):
 			}
 			line["stations"].append(station)
 
-	def get_line_name(self, td):
+	def getLineName(self, td):
 		return td.xpath("text()").extract()[0].split("线")[0] + "线"
 
-	def parse_distance(self, response):
+	def parseDistance(self, response):
 
 		#self.log(response.body)
 
 		tables = response.xpath("//table")
 		for table in tables:
 			head = table.xpath("thead/tr/td")[0]
-			lineName = self.get_line_name(head)
+			lineName = self.getLineName(head)
 			self.log(lineName)
 
 			self.lineId += 1
@@ -98,7 +139,7 @@ class News163Spider(scrapy.Spider):
 			self.lines.append(line)
 
 			distances = table.xpath("tbody/tr")
-			self.process_distance_table(distances, line)
+			self.processDistance(distances, line)
 
 
 		self.write()
