@@ -52,10 +52,9 @@ class SubwaySpider(scrapy.Spider):
 
 		self.write()
 
-	def getStation(self, line, stationName):
+	def findStation(self, line, stationName):
 		for station in line["stations"]:
-			name = station["name"]
-			if (name == stationName + ""):
+			if station["name"] == stationName:
 				return station
 		return None
 
@@ -65,9 +64,9 @@ class SubwaySpider(scrapy.Spider):
 		items = time_tables.xpath("tr")
 		for item in items:
 			stationTable = item.xpath("th")[0]
-			stationName = stationTable.xpath("text()").extract()[0]
+			stationName = stationTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
 
-			station = self.getStation(line, stationName)
+			station = self.findStation(line, stationName)
 			if (not station):
 				self.log("got station from line error %s" % stationName)
 				continue
@@ -79,7 +78,7 @@ class SubwaySpider(scrapy.Spider):
 
 			index = 0
 			for timeTable in timeValues:
-				timeValue = timeTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "")
+				timeValue = timeTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
 				position = index / columes
 				lastTrain[position]["first"] = timeValue
 				index += 1
