@@ -10,16 +10,69 @@ import json
 from hscrapy.utils.commonUtil import transToStr
 
 
-TIME_TABLE_TYPE_NORMAL = {}
+
+
+
+def timetable_handler_normal(timeValues, lastTrain):
+	columeCount = len(lastTrain)
+
+	values = []
+	for timeTable in timeValues:
+		timeValue = timeTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
+		values.append(timeValue)
+
+	valueCount = len(values)
+
+	if (not columeCount):
+		return
+
+	if (columeCount != valueCount / columeCount):
+		print("count not match[%d:%d]" % (columeCount, valueCount / columeCount))
+		return
+
+	for i in range(0, valueCount / columeCount):
+		lastTrain[i]["first"] = values[i * 2]
+		lastTrain[i]["last"] = values[i * 2 + 1]
+
+
+def titles_handler_normal(table):
+
+	lastTrain = []
+
+	items = table.xpath("thead/tr/td")[2:]
+
+	for item in items:
+		value = item.xpath("text()").extract()[0]
+		timeTable = {
+			"direction": value
+		}
+
+		lastTrain.append(timeTable)
+
+	return lastTrain
 
 
 timeTableSettings = {
-	"1号线": TIME_TABLE_TYPE_NORMAL,
+	"1号线": {
+		"timeFunc": timetable_handler_normal,
+		"titleFunc": titles_handler_normal,
+	},
 }
 
+def getTimeFunction(lineName):
+	settings = timeTableSettings.get(lineName)
+	if (not settings):
+		return timetable_handler_normal
+	else:
+		return settings["timeFunc"]
 
-def getParseType(lineName):
-	return timeTableSettings.get(lineName) or TIME_TABLE_TYPE_NORMAL
+
+def getTitleFunction(lineName):
+	settings = timeTableSettings.get(lineName)
+	if (not settings):
+		return titles_handler_normal
+	else:
+		return settings["titleFunc"]
 
 
 class SubwaySpider(scrapy.Spider):
@@ -74,14 +127,11 @@ class SubwaySpider(scrapy.Spider):
 			station["lastTrain"] = lastTrain
 
 			timeValues = item.xpath("td")
-			columes = len(lastTrain)
 
-			index = 0
-			for timeTable in timeValues:
-				timeValue = timeTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
-				position = index / columes
-				lastTrain[position]["first"] = timeValue
-				index += 1
+			timeHandler = getTimeFunction(line["name"])
+			if (timeHandler):
+				timeHandler(timeValues, lastTrain)
+
 
 	def findLine(self, lineName):
 
@@ -92,24 +142,11 @@ class SubwaySpider(scrapy.Spider):
 
 	def getTitles(self, table, lineName):
 
-		lastTrain = []
-
-		settingType = getParseType(lineName)
-		if (settingType == TIME_TABLE_TYPE_NORMAL):
-			items = table.xpath("thead/tr/td")[2:]
+		titleHandler = getTitleFunction(lineName)
+		if (titleHandler):
+			return titleHandler(table)
 		else:
-			items = table.xpath("thead/tr/td")[2:]
-
-		for item in items:
-			value = item.xpath("text()").extract()[0]
-			self.log(value)
-			timeTable = {
-				"direction": value
-			}
-
-			lastTrain.append(timeTable)
-
-		return lastTrain
+			return []
 
 	def parseTimeTable(self, response):
 
@@ -122,6 +159,9 @@ class SubwaySpider(scrapy.Spider):
 			titles = self.getTitles(table, lineName)
 
 			line = self.findLine(lineName)
+			if (not line):
+				self.log("got line error for %s" % lineName)
+				continue
 
 			time_tables = table.xpath("tbody")[0]
 			self.processTimeTable(time_tables, line, titles)

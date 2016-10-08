@@ -30,9 +30,9 @@ KEYWORDS = [
 ]
 
 
-class News163Spider(scrapy.Spider):
+class OctlinkSpider(scrapy.Spider):
 
-	name = "news163"
+	name = "octlink"
 
 	urls = {}
 	urlList = []
