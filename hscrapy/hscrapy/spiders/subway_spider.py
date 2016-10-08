@@ -13,8 +13,8 @@ from hscrapy.utils.commonUtil import transToStr
 
 
 
-def timetable_handler_normal(timeValues, lastTrain):
-	columeCount = len(lastTrain)
+def timetable_handler_normal(timeValues, lastTrain, titles):
+	titleCount = len(titles)
 
 	values = []
 	for timeTable in timeValues:
@@ -23,16 +23,22 @@ def timetable_handler_normal(timeValues, lastTrain):
 
 	valueCount = len(values)
 
-	if (not columeCount):
+	if (not titleCount):
 		return
 
-	if (columeCount != valueCount / columeCount):
-		print("count not match[%d:%d]" % (columeCount, valueCount / columeCount))
+	valuesPerLine = valueCount / titleCount
+
+	if (titleCount != valuesPerLine):
+		print("count not match[%d:%d]" % (titleCount, valuesPerLine))
 		return
 
-	for i in range(0, valueCount / columeCount):
-		lastTrain[i]["first"] = values[i * 2]
-		lastTrain[i]["last"] = values[i * 2 + 1]
+	for i in range(0, valuesPerLine):
+		item = {
+			"direction": titles[i]["direction"],
+			"first": values[i * 2],
+			"last": values[i * 2 + 1]
+		}
+		lastTrain.append(item)
 
 
 def titles_handler_normal(table):
@@ -112,16 +118,18 @@ class SubwaySpider(scrapy.Spider):
 		return None
 
 
-	def processTimeTable(self, time_tables, line, lastTrain):
+	def processTimeTable(self, time_tables, line, timeTitles):
 
 		items = time_tables.xpath("tr")
 		for item in items:
+			lastTrain = []
+
 			stationTable = item.xpath("th")[0]
 			stationName = stationTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
 
 			station = self.findStation(line, stationName)
 			if (not station):
-				self.log("got station from line error %s" % stationName)
+				self.log("got station from line error [%s]" % stationName)
 				continue
 
 			station["lastTrain"] = lastTrain
@@ -130,7 +138,7 @@ class SubwaySpider(scrapy.Spider):
 
 			timeHandler = getTimeFunction(line["name"])
 			if (timeHandler):
-				timeHandler(timeValues, lastTrain)
+				timeHandler(timeValues, lastTrain, timeTitles)
 
 
 	def findLine(self, lineName):
@@ -175,8 +183,8 @@ class SubwaySpider(scrapy.Spider):
 		for disItem in distances:
 			th = disItem.xpath("th")[0]
 			names = th.xpath("text()").extract()[0].split("—")
-			stationName = names[0]
-			lastStationName = names[-1]
+			stationName = names[0].replace(" ", "")
+			lastStationName = names[-1].replace(" ", "")
 
 			distance = disItem.xpath("td/text()").extract()[0]
 			station = {
