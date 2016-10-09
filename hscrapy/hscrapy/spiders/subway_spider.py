@@ -5,11 +5,7 @@ import os
 import scrapy
 
 from hscrapy.settings import DEST_DIR
-import json
-
 from hscrapy.utils.commonUtil import transToStr
-
-
 
 
 
@@ -40,46 +36,151 @@ def timetable_handler_normal(timeValues, lastTrain, titles):
 		}
 		lastTrain.append(item)
 
+def timetable_handler_line13(timeValues, lastTrain, titles):
+	titleCount = len(titles)
 
-def titles_handler_normal(table):
+	values = []
+	for timeTable in timeValues:
+		timeValue = timeTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
+		values.append(timeValue)
 
-	lastTrain = []
+	valueCount = len(values)
 
-	items = table.xpath("thead/tr/td")[2:]
+	if (not titleCount):
+		return
 
-	for item in items:
-		value = item.xpath("text()").extract()[0]
-		timeTable = {
-			"direction": value
+	valuesPerLine = valueCount / titleCount
+
+	for i in range(0, titleCount):
+		item = {
+			"direction": titles[i]["direction"],
+			"first": values[i * 2],
+			"last": values[i * 2 + 1]
 		}
-
-		lastTrain.append(timeTable)
-
-	return lastTrain
+		lastTrain.append(item)
 
 
 timeTableSettings = {
-	"1号线": {
-		"timeFunc": timetable_handler_normal,
-		"titleFunc": titles_handler_normal,
+	u"1号线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往四惠东方向"
+			},
+			{
+				"direction": u"往苹果园方向",
+			}
+		],
+	},
+	u"5号线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往天通苑北方向",
+			},
+			{
+				"direction": u"往宋家庄方向"
+			}
+		],
+	},
+	u"7号线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往北京西站方向",
+			},
+			{
+				"direction": u"往焦化厂站方向"
+			}
+		],
+	},
+	u"8号线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往南锣鼓巷方向",
+			},
+			{
+				"direction": u"往朱辛庄方向"
+			}
+		],
+	},
+	u"9号线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往郭公庄方向",
+			},
+			{
+				"direction": u"往国家图书馆方向"
+			}
+		],
+	},
+	u"13号线": {
+		"func": timetable_handler_line13,
+		"titles": [
+			{
+				"direction": u"往西直门（全程）方向",
+			},
+			{
+				"direction": u"往东直门（全程）方向",
+			},
+			{
+				"direction": u"往西直门（霍营区间）方向",
+			},
+			{
+				"direction": u"往东直门（回龙观区间）方向",
+			}
+		],
+	},
+	u"八通线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往土桥",
+			},
+			{
+				"direction": u"往四惠"
+			}
+		],
+	},
+	u"房山线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往苏庄方向",
+			},
+			{
+				"direction": u"往郭公庄方向"
+			}
+		],
+	},
+	u"亦庄线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往次渠方向",
+			},
+			{
+				"direction": u"往宋家庄方向"
+			}
+		],
+	},
+	u"机场线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往市区",
+			},
+			{
+				"direction": u"往机场"
+			}
+		],
 	},
 }
 
-def getTimeFunction(lineName):
-	settings = timeTableSettings.get(lineName)
-	if (not settings):
-		return timetable_handler_normal
-	else:
-		return settings["timeFunc"]
-
-
-def getTitleFunction(lineName):
-	settings = timeTableSettings.get(lineName)
-	if (not settings):
-		return titles_handler_normal
-	else:
-		return settings["titleFunc"]
-
+def getTimeTableSettings(lineName):
+	return timeTableSettings.get(lineName)
 
 class SubwaySpider(scrapy.Spider):
 
@@ -118,7 +219,7 @@ class SubwaySpider(scrapy.Spider):
 		return None
 
 
-	def processTimeTable(self, time_tables, line, timeTitles):
+	def processTimeTable(self, time_tables, line, timeTableSettings):
 
 		items = time_tables.xpath("tr")
 		for item in items:
@@ -136,9 +237,10 @@ class SubwaySpider(scrapy.Spider):
 
 			timeValues = item.xpath("td")
 
-			timeHandler = getTimeFunction(line["name"])
+			timeHandler = timeTableSettings["func"]
 			if (timeHandler):
-				timeHandler(timeValues, lastTrain, timeTitles)
+				timeHandler(timeValues, lastTrain, timeTableSettings["titles"])
+				line["timeTableDesc"] = timeTableSettings.get("desc") or ""
 
 
 	def findLine(self, lineName):
@@ -148,13 +250,6 @@ class SubwaySpider(scrapy.Spider):
 				return line
 		return None
 
-	def getTitles(self, table, lineName):
-
-		titleHandler = getTitleFunction(lineName)
-		if (titleHandler):
-			return titleHandler(table)
-		else:
-			return []
 
 	def parseTimeTable(self, response):
 
@@ -162,9 +257,7 @@ class SubwaySpider(scrapy.Spider):
 		for table in tables:
 			head = table.xpath("thead/tr/td")[0]
 			lineName = self.getLineName(head)
-			self.log(lineName)
-
-			titles = self.getTitles(table, lineName)
+			self.log("line name [%s]" % lineName)
 
 			line = self.findLine(lineName)
 			if (not line):
@@ -172,7 +265,10 @@ class SubwaySpider(scrapy.Spider):
 				continue
 
 			time_tables = table.xpath("tbody")[0]
-			self.processTimeTable(time_tables, line, titles)
+
+			timeTableSettings = getTimeTableSettings(lineName)
+			if (timeTableSettings):
+				self.processTimeTable(time_tables, line, timeTableSettings)
 
 		self.write()
 
@@ -183,8 +279,12 @@ class SubwaySpider(scrapy.Spider):
 		for disItem in distances:
 			th = disItem.xpath("th")[0]
 			names = th.xpath("text()").extract()[0].split("—")
-			stationName = names[0].replace(" ", "")
-			lastStationName = names[-1].replace(" ", "")
+			stationName = names[0].replace("\r", "").replace("\r", "").replace(" ", "")
+			lastStationName = names[-1].replace("\r", "").replace("\r", "").replace(" ", "")
+
+			if (line["name"] == u"机场线"):  # to process name conflict
+				stationName = stationName.replace("T2", "2号").replace("T3", "3号")
+				lastStationName = lastStationName.replace("T2", "2号").replace("T3", "3号")
 
 			distance = disItem.xpath("td/text()").extract()[0]
 			station = {
@@ -208,7 +308,15 @@ class SubwaySpider(scrapy.Spider):
 			line["stations"].append(station)
 
 	def getLineName(self, td):
-		return td.xpath("text()").extract()[0].split("线")[0] + "线"
+		lineValue = td.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
+		lineName = lineValue.split(u"线")[0] + u"线"
+		if (lineName == u"14号线"):
+			if (lineValue.find(u"东") > 0):
+				lineName += u"东段"
+			else:
+				lineName += u"西段"
+
+		return lineName
 
 	def parseDistance(self, response):
 
