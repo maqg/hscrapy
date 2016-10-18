@@ -28,5 +28,117 @@
   {
     "name": "中国政府采购网",
     "url": "http://www.ccgp.gov.cn"
+  },
+  {
+    "name": "河北省政府采购网",
+    "url": "http://www.ccgp-hebei.gov.cn/zfcg/",
+    "subUrls": [
+      {
+        "name": "招标公告",
+        "pages": 8,
+        "url": "http://www.ccgp-hebei.gov.cn/zfcg/web/getBidingList_%d.html"
+      },
+      {
+        "name": "预中标公告",
+        "pages": 8,
+        "url": "http://www.ccgp-hebei.gov.cn/zfcg/web/getPreWinAnncList_%d.html"
+      },
+      {
+        "name": "更正公告",
+        "pages": 8,
+        "url": "http://www.ccgp-hebei.gov.cn/zfcg/web/getCorrectionAnncList_%d.html"
+      },
+      {
+        "name": "中标公告",
+        "pages": 8,
+        "url": "http://www.ccgp-hebei.gov.cn/zfcg/web/getBidWinAnncList_%d.html"
+      },
+      {
+        "name": "废标公告",
+        "pages": 8,
+        "url": "http://www.ccgp-hebei.gov.cn/zfcg/web/getCancelBidAnncList_%d.html"
+      },
+      {
+        "name": "单一来源",
+        "pages": 8,
+        "url": "http://www.ccgp-hebei.gov.cn/zfcg/web/getSingleSourceList_%d.html"
+      },
+      {
+        "name": "合同公告",
+        "pages": 8,
+        "url": "http://www.ccgp-hebei.gov.cn/zfcg/web/getcontractList_%d.html"
+      }
+    ]
+  },
+  {
+    "name": "河北省省级政府采购中心",
+    "url": "http://www.hbgp.gov.cn/",
+    "subUrls": [
+      {
+        "name": "招标公告",
+        "pages": 5,
+        "url": "http://www.hbgp.gov.cn/043/%d.html"
+      },
+      {
+        "name": "预中标公告",
+        "pages": 5,
+        "url": "http://www.hbgp.gov.cn/045/%d.html"
+      },
+      {
+        "name": "更正公告",
+        "pages": 5,
+        "url": "http://www.hbgp.gov.cn/044/%d.html"
+      },
+      {
+        "name": "结果公告",
+        "pages": 5,
+        "url": "http://www.hbgp.gov.cn/044/%d.html"
+      }
+    ]
+  },
+  {
+    "name": "安徽省政府采购",
+    "url": "http://www.ahzfcg.gov.cn/"
+  },
+  {
+    "name": "山东政府采购网",
+    "url": "http://www.ccgp-shandong.gov.cn/",
+    "subUrls": [
+      {
+        "name": "省招标公告",
+        "pages": 10,
+        "url": "http://www.ccgp-shandong.gov.cn/sdgp2014/site/channelall.jsp?curpage=%d&colcode=0301&subject=&pdate="
+      },
+      {
+        "name": "省中标公告",
+        "pages": 10,
+        "url": "http://www.ccgp-shandong.gov.cn/sdgp2014/site/channelall.jsp?curpage=%d&colcode=0302&subject=&pdate="
+      },
+      {
+        "name": "市招标公告",
+        "pages": 10,
+        "url": "http://www.ccgp-shandong.gov.cn/sdgp2014/site/channelall.jsp?curpage=%d&colcode=0303&subject=&pdate="
+      },
+      {
+        "name": "市中标公告",
+        "pages": 10,
+        "url": "http://www.ccgp-shandong.gov.cn/sdgp2014/site/channelall.jsp?curpage=%d&colcode=0304&subject=&pdate="
+      },
+      {
+        "name": "废标公告",
+        "pages": 10,
+        "url": "http://www.ccgp-shandong.gov.cn/sdgp2014/site/channelall.jsp?curpage=%d&colcode=0306&subject=&pdate="
+      },
+      {
+        "name": "更正公告",
+        "pages": 10,
+        "url": "http://www.ccgp-shandong.gov.cn/sdgp2014/site/channelall.jsp?curpage=%d&colcode=0305&subject=&pdate="
+      },
+      {
+        "name": "资格预审公告",
+        "pages": 10,
+        "url": "http://www.ccgp-shandong.gov.cn/sdgp2014/site/channelall.jsp?curpage=%d&colcode=0307&subject=&pdate="
+      }
+    ]
   }
 ]

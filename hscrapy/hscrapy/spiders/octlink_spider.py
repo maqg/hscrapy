@@ -56,27 +56,52 @@ class OctlinkSpider(scrapy.Spider):
 		else:
 			return DEST_DIR
 
+	def getParentUrl(self, url):
+		urlObj = self.urls.get(url)
+		if (urlObj):
+			return urlObj["parent"]
+		else:
+			return url
+
 	def handUrl(self, url, parent=None):
 
-		self.urlList.append(url)
+		pages = url.get("pages") or 0
 
-		urlObj = {
-			"name": url["name"],
-			"url": url["url"]
-		}
-		if (parent):
-			urlObj["dir"] = DEST_DIR + os.sep + parent + os.sep + url["name"]
-		else:
-			urlObj["dir"] = DEST_DIR + os.sep + url["name"]
+		for pId in range(1, pages + 2):
+			newUrl = {
+				"name": url["name"],
+			}
+			if (pages):
+				newUrl["url"] = url["url"] % pId
+			else:
+				newUrl["url"] = url["url"]
 
-		if (not os.path.exists(urlObj["dir"])):
-			os.makedirs(urlObj["dir"])
+			self.urlList.append(newUrl)
 
-		self.urls[url["url"]] = urlObj
+		for pId in range(1, pages + 2):
+			urlObj = {
+				"name": url["name"],
+			}
+			if (pages):
+				urlObj["url"] = url["url"] % pId
+			else:
+				urlObj["url"] = url["url"]
+
+			if (parent):
+				urlObj["dir"] = DEST_DIR + os.sep + parent["name"] + os.sep + url["name"]
+				urlObj["parent"] = parent["url"]
+			else:
+				urlObj["dir"] = DEST_DIR + os.sep + url["name"]
+				urlObj["parent"] = url["url"]
+
+			if (not os.path.exists(urlObj["dir"])):
+				os.makedirs(urlObj["dir"])
+
+			self.urls[urlObj["url"]] = urlObj
 
 		if (url.has_key("subUrls")):
 			for subUrl in url["subUrls"]:
-				self.handUrl(subUrl, url["name"])
+				self.handUrl(subUrl, url)
 
 	def loadUrls(self):
 		urlObjs = fileToObj(PS_CONFIG)
@@ -87,26 +112,6 @@ class OctlinkSpider(scrapy.Spider):
 		self.loadUrls()
 		for url in self.urlList:
 			yield scrapy.http.Request(url=url["url"], callback=self.parse)
-
-
-	def parse_img(self, body, baseUrl):
-
-		bodies = body.replace(" ", "").replace("\t", "").split("\n")
-
-		for line in bodies:
-			if (len(line)) > 10 and line.find("<img") != -1:
-				imgUrl = line.split("\"")[1]
-				dstUrl =  DEST_DIR + os.sep + imgUrl.split("/")[-1]
-				if (imgUrl.startswith("http")):
-					cmd = "curl %s -o %s" % (imgUrl, dstUrl)
-				else:
-					if (baseUrl.endswith("/")):
-						fullUrl = "%s%s" % (baseUrl, imgUrl)
-					else:
-						fullUrl = "%s/%s" % (baseUrl, imgUrl)
-					cmd = "curl %s -o %s" % (fullUrl, dstUrl)
-				print(cmd)
-				os.system(cmd)
 
 	def parseUrl(self, body, baseUrl):
 
@@ -146,6 +151,7 @@ class OctlinkSpider(scrapy.Spider):
 			self.log("this url already exist, just skip it %s" % response.url)
 			return
 
+		self.log(dstPath)
 		fd = open(dstPath, "w+")
 		fd.write(response.body)
 		fd.close()
@@ -174,7 +180,7 @@ class OctlinkSpider(scrapy.Spider):
 			if (not len(names)):
 				continue
 
-			name = names[0]
+			name = names[0].replace("\r", "").replace("\n", "")
 			if (not name or name == "<"): # no name specified
 				continue
 
@@ -182,7 +188,11 @@ class OctlinkSpider(scrapy.Spider):
 				continue
 
 			href = url.xpath("@href").extract()[0]
-			subUrl = baseUrl + href
+			if (href == "#"):
+				continue
+
+			parentUrl = self.getParentUrl(baseUrl)
+			subUrl = parentUrl + href
 			if (self.getTitle(subUrl)): # already read it
 				continue
 
