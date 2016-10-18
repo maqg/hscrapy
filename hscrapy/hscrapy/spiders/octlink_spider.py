@@ -71,6 +71,15 @@ class OctlinkSpider(scrapy.Spider):
 			newUrl = {
 				"name": url["name"],
 			}
+
+			if (parent):
+				if (parent.get("parser")):
+					newUrl["parser"] = self.parser_hebeisheng
+				else:
+					newUrl["parser"] = self.parse
+			else:
+				newUrl["parser"] = self.parse
+
 			if (pages):
 				newUrl["url"] = url["url"] % pId
 			else:
@@ -111,7 +120,7 @@ class OctlinkSpider(scrapy.Spider):
 	def start_requests(self):
 		self.loadUrls()
 		for url in self.urlList:
-			yield scrapy.http.Request(url=url["url"], callback=self.parse)
+			yield scrapy.http.Request(url=url["url"], callback=url["parser"])
 
 	def parseUrl(self, body, baseUrl):
 
@@ -168,7 +177,7 @@ class OctlinkSpider(scrapy.Spider):
 			fd.write(content)
 			fd.close()
 
-	def parse(self, response):
+	def parser_hebeisheng(self, response):
 
 		baseUrl = response.url
 		self.log(baseUrl)
@@ -193,6 +202,45 @@ class OctlinkSpider(scrapy.Spider):
 
 			parentUrl = self.getParentUrl(baseUrl)
 			subUrl = parentUrl + href
+			if (self.getTitle(subUrl)): # already read it
+				continue
+
+			title = {
+				"dir": self.getDir_byUrl(baseUrl),
+				"name": name
+			}
+			self.titles[subUrl] = title
+			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
+
+	def parse(self, response):
+
+		baseUrl = response.url
+		self.log(baseUrl)
+
+		urls = response.xpath("//a")
+
+		for url in urls:
+			names = url.xpath("text()").extract()
+			if (not len(names)):
+				continue
+
+			name = names[0].replace("\r", "").replace("\n", "").replace("\\", "/")
+			if (not name or name == "<"): # no name specified
+				continue
+
+			if (not self.matchRules(name)):
+				continue
+
+			href = url.xpath("@href").extract()[0]
+			if (href == "#"):
+				continue
+
+			if (href[0] == "."):
+				newBaseUrl = baseUrl.split("index")[0]
+				subUrl = newBaseUrl + href[1:]
+			else:
+				subUrl = self.getParentUrl(baseUrl) + href
+
 			if (self.getTitle(subUrl)): # already read it
 				continue
 
