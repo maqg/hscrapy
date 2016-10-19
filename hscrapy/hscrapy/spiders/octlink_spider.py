@@ -155,8 +155,8 @@ class OctlinkSpider(scrapy.Spider):
 		if (format in ["jpg", "gif", "png"]):
 			dstPath = title["dir"] + os.sep + title["name"] + "." + format
 		else:
-			dstPath = title["dir"] + os.sep + title["name"] + "." + "html"
-			dstUrlPath = title["dir"] + os.sep + title["name"] + "." + "URL" + "." + "html"
+			dstPath = title["dir"] + os.sep + title["name"] + "_" + title["time"] + "." + "html"
+			dstUrlPath = title["dir"] + os.sep + title["name"] + "_" + "URL" + "." + "html"
 
 		if (os.path.exists(dstPath)):
 			self.log("this url already exist, just skip it %s" % response.url)
@@ -202,8 +202,17 @@ class OctlinkSpider(scrapy.Spider):
 
 		urlFormat = parseJS()
 		urls = response.xpath("//table/tr[contains(@onclick, 'watchContent')]")
+		attrs = response.xpath("//table/tr[@bgcolor='#E3EDF6']")
 
-		for url in urls:
+		if (len(urls) != len(attrs)):
+			itemCount = min(len(urls), len(attrs))
+		else:
+			itemCount = len(urls)
+
+		for i in range(0, itemCount):
+
+			url = urls[i]
+			attr = attrs[i]
 
 			onclickItems = url.xpath("@onclick").extract()[0].replace("(", ",").replace(")", ",").replace("'", "").split(",")
 			if (len(onclickItems) == 4):
@@ -220,6 +229,12 @@ class OctlinkSpider(scrapy.Spider):
 			if (not name or name == "<"): # no name specified
 				continue
 
+			items = attr.xpath("td/span")
+			if (not items):
+				timeInfo = "NotSet"
+			else:
+				timeInfo = items[0].xpath("text()").extract()[0].replace("\r", "").replace("\n", "")
+
 			if (not self.matchRules(name)):
 				continue
 
@@ -233,7 +248,8 @@ class OctlinkSpider(scrapy.Spider):
 
 			title = {
 				"dir": self.getDir_byUrl(baseUrl),
-				"name": name
+				"name": name,
+				"time": timeInfo,
 			}
 			self.titles[subUrl] = title
 			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
@@ -276,7 +292,8 @@ class OctlinkSpider(scrapy.Spider):
 
 			title = {
 				"dir": self.getDir_byUrl(baseUrl),
-				"name": name
+				"name": name,
+				"time": "NotSet"
 			}
 			self.titles[subUrl] = title
 			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)

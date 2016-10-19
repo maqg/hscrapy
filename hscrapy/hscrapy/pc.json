@@ -34,7 +34,7 @@
   {
     "name": "中国政府采购网",
     "url": "http://www.ccgp.gov.cn",
-    "state": true,
+    "state": false,
     "subUrls": [
       {
         "name": "招标公告（中央）",
@@ -167,7 +167,7 @@
   {
     "name": "河北省政府采购网",
     "url": "http://www.ccgp-hebei.gov.cn",
-    "state": true,
+    "state": false,
     "parser": "hebeisheng",
     "subUrls": [
       {
@@ -210,7 +210,7 @@
   {
     "name": "河北省省级政府采购中心",
     "url": "http://www.hbgp.gov.cn/",
-    "state": true,
+    "state": false,
     "subUrls": [
       {
         "name": "招标公告",
@@ -242,7 +242,7 @@
   {
     "name": "山东政府采购网",
     "url": "http://www.ccgp-shandong.gov.cn/",
-    "state": true,
+    "state": false,
     "subUrls": [
       {
         "name": "省招标公告",
