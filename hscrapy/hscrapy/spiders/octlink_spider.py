@@ -115,6 +115,8 @@ class OctlinkSpider(scrapy.Spider):
 	def loadUrls(self):
 		urlObjs = fileToObj(PS_CONFIG)
 		for url in urlObjs:
+			if (not url.get("state")):
+				continue
 			self.handUrl(url)
 
 	def start_requests(self):
@@ -179,16 +181,41 @@ class OctlinkSpider(scrapy.Spider):
 
 	def parser_hebeisheng(self, response):
 
+		def parseJS():
+			item = response.body.find("$(\"#contentform\").attr(")
+			lineEnd = response.body[item:].find("\r\n")
+			raw = response.body[item: item + lineEnd]
+
+			urlFormat = raw.split(",")[-1].replace("+flag+", "__FLAG__").replace("+fid+", "__FID__").replace("\"", "")[:-2]
+			self.log("got url Format %s" % urlFormat)
+
+			return urlFormat
+
+		def makeUrl(flag, fid=None):
+			tmp = urlFormat.replace("__FLAG__", str(flag))
+			if (fid):
+				tmp = tmp.replace("__FID__", str(fid))
+			return tmp
+
 		baseUrl = response.url
 		self.log(baseUrl)
 
-		urls = response.xpath("//a")
+		urlFormat = parseJS()
+		urls = response.xpath("//table/tr[contains(@onclick, 'watchContent')]")
 
 		for url in urls:
-			names = url.xpath("text()").extract()
+
+			onclickItems = url.xpath("@onclick").extract()[0].replace("(", ",").replace(")", ",").replace("'", "").split(",")
+			if (len(onclickItems) == 4):
+				fid = int(onclickItems[1])
+				flag = int(onclickItems[2])
+			else:
+				flag = None
+				fid = int(onclickItems[1])
+
+			names = url.xpath("td/a/text()").extract()
 			if (not len(names)):
 				continue
-
 			name = names[0].replace("\r", "").replace("\n", "")
 			if (not name or name == "<"): # no name specified
 				continue
@@ -196,12 +223,11 @@ class OctlinkSpider(scrapy.Spider):
 			if (not self.matchRules(name)):
 				continue
 
-			href = url.xpath("@href").extract()[0]
-			if (href == "#"):
-				continue
-
-			parentUrl = self.getParentUrl(baseUrl)
-			subUrl = parentUrl + href
+			nextUrl = makeUrl(flag, fid)
+			if (nextUrl.startswith("http")):
+				subUrl = nextUrl
+			else:
+				subUrl = self.getParentUrl(baseUrl) + nextUrl
 			if (self.getTitle(subUrl)): # already read it
 				continue
 
@@ -231,7 +257,11 @@ class OctlinkSpider(scrapy.Spider):
 			if (not self.matchRules(name)):
 				continue
 
-			href = url.xpath("@href").extract()[0]
+			hrefs = url.xpath("@href").extract()
+			if (not hrefs):
+				continue
+
+			href = hrefs[0]
 			if (href == "#"):
 				continue
 

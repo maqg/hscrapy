@@ -2,32 +2,39 @@
   {
     "name": "北京市政府采购中心",
     "url": "http://www.bgpc.gov.cn/",
+    "state": true,
     "subUrls": [
       {
         "name": "招标公告",
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/29"
+        "pages": 10,
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/29/page/%d"
       },
       {
         "name": "直采（非招标公告）",
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/31"
+        "pages": 10,
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/31/page/%d"
       },
       {
         "name": "更正公告",
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/30"
+        "pages": 10,
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/30/page/%d"
       },
       {
         "name": "中标公告",
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/32"
+        "pages": 10,
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/32/page/%d"
       },
       {
         "name": "废标公告",
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/33"
+        "pages": 10,
+        "url": "http://www.bgpc.gov.cn/news/news/nt_id/33/page/%d"
       }
     ]
   },
   {
     "name": "中国政府采购网",
     "url": "http://www.ccgp.gov.cn",
+    "state": true,
     "subUrls": [
       {
         "name": "招标公告（中央）",
@@ -159,7 +166,8 @@
   },
   {
     "name": "河北省政府采购网",
-    "url": "http://www.ccgp-hebei.gov.cn/zfcg/",
+    "url": "http://www.ccgp-hebei.gov.cn",
+    "state": true,
     "parser": "hebeisheng",
     "subUrls": [
       {
@@ -202,6 +210,7 @@
   {
     "name": "河北省省级政府采购中心",
     "url": "http://www.hbgp.gov.cn/",
+    "state": true,
     "subUrls": [
       {
         "name": "招标公告",
@@ -227,11 +236,13 @@
   },
   {
     "name": "安徽省政府采购",
+    "state": false,
     "url": "http://www.ahzfcg.gov.cn/"
   },
   {
     "name": "山东政府采购网",
     "url": "http://www.ccgp-shandong.gov.cn/",
+    "state": true,
     "subUrls": [
       {
         "name": "省招标公告",
