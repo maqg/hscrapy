@@ -220,50 +220,46 @@ def timetable_handler_line6(timeValues, lastTrain, titles):
 
 def timetable_handler_line10(timeValues, lastTrain, titles):
 
-	return
-
-	titleCount = len(titles)
+	timeCount = len(timeValues)
 
 	values = []
 	for timeTable in timeValues:
 		timeValue = timeTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
 		values.append(timeValue)
 
-	if (not titleCount):
+	if (not len(titles)):
 		return
 
-	item0 = {
-		"direction": titles[0]["direction"],
-		"first": values[0],
-		"last": values[1]
-	}
+	if (timeCount == 4):
+		lastTrain.append({
+			"direction": titles[0]["direction"],
+			"first": values[0],
+			"last": values[1]
+		})
 
-	item1 = {
-		"direction": titles[1]["direction"],
-		"first": values[0],
-		"last": values[2]
-	}
+		lastTrain.append({
+			"direction": titles[1]["direction"],
+			"first": values[0],
+			"last": values[2]
+		})
 
-	item2 = {
-		"direction": titles[2]["direction"],
-		"first": values[3],
-		"last": values[4]
-	}
+		lastTrain.append({
+			"direction": titles[2]["direction"],
+			"first": values[0],
+			"last": values[3]
+		})
+	else:
+		lastTrain.append({
+			"direction": titles[3]["direction"],
+			"first": values[0],
+			"last": values[1]
+		})
 
-	item3 = {
-		"direction": titles[3]["direction"],
-		"first": values[3],
-		"last": values[5]
-	}
-
-	item4 = {
-		"direction": titles[4]["direction"],
-		"first": values[3],
-		"last": values[5]
-	}
-
-	for item in (item0, item1, item2, item3, item4):
-		lastTrain.append(item)
+		lastTrain.append({
+			"direction": titles[4]["direction"],
+			"first": values[0],
+			"last": values[2]
+		})
 
 
 
@@ -461,12 +457,6 @@ timeTableSettings = {
 		"func": timetable_handler_line10,
 		"titles": [
 			{
-				"direction": u"上行（外环）全程，车道沟-宋家庄-国贸-巴沟方向",
-			},
-			{
-				"direction": u"上行（外环）终点车道沟，车道沟-宋家庄-国贸-巴沟方向",
-			},
-			{
 				"direction": u"下行（内环）全程，巴沟-国贸-宋家庄-车道沟方向",
 			},
 			{
@@ -474,6 +464,12 @@ timeTableSettings = {
 			},
 			{
 				"direction": u"下行（内环）终点成寿寺，巴沟-国贸-宋家庄-车道沟方向",
+			},
+			{
+				"direction": u"上行（外环）全程，车道沟-宋家庄-国贸-巴沟方向",
+			},
+			{
+				"direction": u"上行（外环）终点车道沟，车道沟-宋家庄-国贸-巴沟方向",
 			}
 		],
 	},
@@ -543,6 +539,11 @@ class SubwaySpider(scrapy.Spider):
 				return station
 		return None
 
+	def parseStationName(self, item):
+		segs = item.xpath("text()").extract()
+
+		return "".join(segs).replace("\r", "").replace("\n", "").replace(" ", "")
+
 
 	def processTimeTable(self, time_tables, line, timeTableSettings):
 
@@ -550,8 +551,16 @@ class SubwaySpider(scrapy.Spider):
 		for item in items:
 			lastTrain = []
 
-			stationTable = item.xpath("th")[0]
-			stationName = stationTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
+			stationTable = item.xpath("th")
+			stationName = self.parseStationName(stationTable[0])
+
+			if (line["name"] == "10号线"):
+				stationName2 = self.parseStationName(stationTable[1])
+				station2 = self.findStation(line, stationName2)
+				lastTrain2 = []
+				if (not station2):
+					self.log("kkkk")
+				station2["lastTrain"] = lastTrain2
 
 			station = self.findStation(line, stationName)
 			if (not station):
@@ -564,7 +573,11 @@ class SubwaySpider(scrapy.Spider):
 
 			timeHandler = timeTableSettings["func"]
 			if (timeHandler):
-				timeHandler(timeValues, lastTrain, timeTableSettings["titles"])
+				if (line["name"] == "10号线"):
+					timeHandler(timeValues[:4], lastTrain, timeTableSettings["titles"])
+					timeHandler(timeValues[4:], lastTrain, timeTableSettings["titles"])
+				else:
+					timeHandler(timeValues, lastTrain, timeTableSettings["titles"])
 				line["timeTableDesc"] = timeTableSettings.get("desc") or ""
 
 
