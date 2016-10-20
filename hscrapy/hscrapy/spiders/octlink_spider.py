@@ -26,7 +26,9 @@ KEYWORDS = [
 	u"IaaS",
 	u"SaaS",
 	u"云教学",
-	u"教育云"
+	u"教育云",
+	u"课程",
+	u"美术"
 ]
 
 
@@ -34,8 +36,8 @@ class OctlinkSpider(scrapy.Spider):
 
 	name = "octlink"
 
-	urls = {}
-	urlList = []
+	urlSettings = {}
+	requestList = []
 
 	titles = {}
 
@@ -50,14 +52,17 @@ class OctlinkSpider(scrapy.Spider):
 		return self.titles.get(url)
 
 	def getDir_byUrl(self, url):
-		urlObj = self.urls.get(url)
+		urlObj = self.urlSettings.get(url)
 		if (urlObj):
 			return urlObj["dir"]
 		else:
 			return DEST_DIR
 
+	def getUrlSettings(self, url):
+		return self.urlSettings.get(url)
+
 	def getParentUrl(self, url):
-		urlObj = self.urls.get(url)
+		urlObj = self.urlSettings.get(url)
 		if (urlObj):
 			return urlObj["parent"]
 		else:
@@ -68,24 +73,24 @@ class OctlinkSpider(scrapy.Spider):
 		pages = url.get("pages") or 0
 
 		for pId in range(1, pages + 2):
-			newUrl = {
+			request = {
 				"name": url["name"],
 			}
 
 			if (parent):
 				if (parent.get("parser")):
-					newUrl["parser"] = self.parser_hebeisheng
+					request["parser"] = self.parser_hebeisheng
 				else:
-					newUrl["parser"] = self.parse
+					request["parser"] = self.parse_new
 			else:
-				newUrl["parser"] = self.parse
+				request["parser"] = self.parse
 
 			if (pages):
-				newUrl["url"] = url["url"] % pId
+				request["url"] = url["url"] % pId
 			else:
-				newUrl["url"] = url["url"]
+				request["url"] = url["url"]
 
-			self.urlList.append(newUrl)
+			self.requestList.append(request)
 
 		for pId in range(1, pages + 2):
 			urlObj = {
@@ -99,6 +104,8 @@ class OctlinkSpider(scrapy.Spider):
 			if (parent):
 				urlObj["dir"] = DEST_DIR + os.sep + parent["name"] + os.sep + url["name"]
 				urlObj["parent"] = parent["url"]
+				urlObj["publishTimeRegex"] = parent.get("publishTimeRegex")
+				urlObj["titleRegex"] = parent.get("titleRegex")
 			else:
 				urlObj["dir"] = DEST_DIR + os.sep + url["name"]
 				urlObj["parent"] = url["url"]
@@ -106,7 +113,7 @@ class OctlinkSpider(scrapy.Spider):
 			if (not os.path.exists(urlObj["dir"])):
 				os.makedirs(urlObj["dir"])
 
-			self.urls[urlObj["url"]] = urlObj
+			self.urlSettings[urlObj["url"]] = urlObj
 
 		if (url.has_key("subUrls")):
 			for subUrl in url["subUrls"]:
@@ -121,7 +128,7 @@ class OctlinkSpider(scrapy.Spider):
 
 	def start_requests(self):
 		self.loadUrls()
-		for url in self.urlList:
+		for url in self.requestList:
 			yield scrapy.http.Request(url=url["url"], callback=url["parser"])
 
 	def parseUrl(self, body, baseUrl):
@@ -147,16 +154,19 @@ class OctlinkSpider(scrapy.Spider):
 
 		title = self.getTitle(response.url)
 		if (not title):
-			self.log("not title got, skip this url %s" % response.url)
-			return
+			redUrl = response.meta["redirect_urls"]
+			title = self.getTitle(redUrl[0]) # redirected page
+			if (not title):
+				self.log("not title got, skip this url %s" % response.url)
+				return
 
 		self.log("got new content %s, store to %s" % (title["name"], title["dir"]))
 		format = response.url.split(".")[-1]
 		if (format in ["jpg", "gif", "png"]):
 			dstPath = title["dir"] + os.sep + title["name"] + "." + format
 		else:
-			dstPath = title["dir"] + os.sep + title["name"] + "_" + title["time"] + "." + "html"
-			dstUrlPath = title["dir"] + os.sep + title["name"] + "_" + "URL" + "." + "html"
+			dstPath = title["dir"] + os.sep + title["time"] + "_" + title["name"] + ".html"
+			dstUrlPath = title["dir"] + os.sep + title["time"] + "_" + title["name"] + "_" + "URL" + ".html"
 
 		if (os.path.exists(dstPath)):
 			self.log("this url already exist, just skip it %s" % response.url)
@@ -225,7 +235,7 @@ class OctlinkSpider(scrapy.Spider):
 			names = url.xpath("td/a/text()").extract()
 			if (not len(names)):
 				continue
-			name = names[0].replace("\r", "").replace("\n", "")
+			name = names[0].replace("\r", "").replace("\n", "").replace("\\", "或").replace("/", "或").replace(":", "").replace(" ", "").replace("\t", "")
 			if (not name or name == "<"): # no name specified
 				continue
 
@@ -254,6 +264,73 @@ class OctlinkSpider(scrapy.Spider):
 			self.titles[subUrl] = title
 			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
 
+
+	def parse_publishtime(self, response, regex):
+		publishTimes = []
+		items = response.xpath(regex)
+		for item in items:
+			datas = item.xpath("text()").extract()
+			data = "".join(datas).split(" ")[0].replace("\r", "").replace("\n", "").replace("\"", "")
+			if (data.startswith("20")):
+				publishTimes.append(data)
+		return publishTimes
+
+	def parse_new(self, response):
+
+		baseUrl = response.url
+		self.log(baseUrl)
+
+		urlSettings = self.getUrlSettings(baseUrl)
+		if (not urlSettings):
+			self.log("no url settings found for url %s " % baseUrl)
+			return
+
+		urls = response.xpath(urlSettings["titleRegex"])
+		publishTimes = self.parse_publishtime(response, urlSettings["publishTimeRegex"])
+
+		titleCount = min(len(urls), len(publishTimes))
+
+		for i in range(0, titleCount):
+			url = urls[i]
+			publishTime = publishTimes[i]
+
+			names = url.xpath("text()").extract()
+			if (not len(names)):
+				continue
+
+			name = names[0].replace("\r", "").replace("\n", "").replace("\\", "或").replace("/", "或").replace(":", "").replace(" ", "").replace("\t", "")
+
+			if (not name or name == "<"): # no name specified
+				continue
+
+			if (not self.matchRules(name)):
+				continue
+
+			hrefs = url.xpath("@href").extract()
+			if (not hrefs):
+				continue
+
+			href = hrefs[0]
+			if (href == "#"):
+				continue
+
+			if (href[0] == "."):
+				newBaseUrl = baseUrl.split("index")[0]
+				subUrl = newBaseUrl + href[1:]
+			else:
+				subUrl = self.getParentUrl(baseUrl) + href
+
+			if (self.getTitle(subUrl)): # already read it
+				continue
+
+			title = {
+				"dir": self.getDir_byUrl(baseUrl),
+				"name": name,
+				"time": publishTime,
+			}
+			self.titles[subUrl] = title
+			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
+
 	def parse(self, response):
 
 		baseUrl = response.url
@@ -266,7 +343,7 @@ class OctlinkSpider(scrapy.Spider):
 			if (not len(names)):
 				continue
 
-			name = names[0].replace("\r", "").replace("\n", "").replace("\\", "/")
+			name = names[0].replace("\r", "").replace("\n", "").replace("\\", "或").replace("/", "或").replace(":", "").replace(" ", "").replace("\t", "")
 			if (not name or name == "<"): # no name specified
 				continue
 
