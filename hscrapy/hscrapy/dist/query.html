@@ -35,25 +35,266 @@
                 <li><a href="/dist/">仪表盘</a></li>
                 <li><a href="/dist/todaylatest.html">今日更新</a></li>
                 <li><a href="/dist/query.html">信息查询</a></li>
+                <li><a href="/dist/pages.html">网站信息</a></li>
             </ul>
         </nav>
     </div>
 </header>
 
 
-<footer class="footer">
-    <small>
-        版权所有 © 2010-2016 北京信联云通科技有限责任公司
-    </small>
-    <nav>
-        <ul>
-            <li><a href="http://www.octlink.com" target="_blank">关于</a></li>
-            <li><a href="http://www.octlink.com" target="_blank">联系我们</a></li>
-            <li><a href="http://www.octlink.com" target="_blank">新闻</a></li>
-            <li><a href="http://www.octlink.com" target="_blank">帮助</a></li>
-        </ul>
-    </nav>
-</footer>
+<script>
+    var webSites = [
+        {
+            "url": "http://www.ccgp.gov.cn",
+            "classes": [
+                {
+                    "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/index.htm",
+                    "name": "中标公告（中央）",
+                    "pages": [
+                        {
+                            "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm",
+                            "fetchTime": "2016-10-21",
+                            "localUrl": "/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html",
+                            "name": "中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告",
+                            "publishTime": "2016-9-1"
+                        },
+                        {
+                            "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm",
+                            "fetchTime": "2016-10-21",
+                            "localUrl": "/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html",
+                            "name": "蟬耍花枪塔顶中",
+                            "publishTime": "2016-9-1"
+                        },
+                        {
+                            "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm",
+                            "fetchTime": "2016-10-21",
+                            "localUrl": "/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html",
+                            "name": "右水3 23火3另",
+                            "publishTime": "2016-9-1"
+                        }
+                    ]
+                },
+                {
+                    "name": "招标公告（中央）",
+                    "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/index.htm",
+                    "pages": [
+                        {
+                            "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm",
+                            "fetchTime": "2016-10-21",
+                            "localUrl": "/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html",
+                            "name": "zlll",
+                            "publishTime": "2016-9-1"
+                        },
+                        {
+                            "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm",
+                            "fetchTime": "2016-10-21",
+                            "localUrl": "/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html",
+                            "name": "fhhhh",
+                            "publishTime": "2016-9-1"
+                        }
+                    ]
+                }
+            ],
+            "name": "中国政府采购网",
+            "pages": [
+                {
+                    "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm",
+                    "localUrl": "/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html",
+                    "fetchTime": "2016-10-21",
+                    "name": "服务采购项目中标公告",
+                    "publishTime": "2016-9-1"
+                },
+                {
+                    "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm",
+                    "localUrl": "/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html",
+                    "fetchTime": "2016-10-1",
+                    "name": "fdafdksfas",
+                    "publishTime": "2016-9k-1"
+                },
+                {
+                    "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm",
+                    "localUrl": "/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html",
+                    "fetchTime": "2016-10h-21",
+                    "name": "nihao",
+                    "publishTime": "2016-h9-1"
+                }
+            ]
+        }
+    ]
+</script>
+
+<div class="container">
+
+    <h2 style="text-align: left">标书信息查询</h2>
+
+    <div style="display: inline-block">
+        <label class="" style="width: 90px;float: left;line-height: 34px; margin-right: 10px">请选择网站：</label>
+        <select onchange="updateModules();" style="margin-right:10px; width: 200px;float: left" class="form-control" id="websiteSelector" name="website" title="">
+        </select>
+        <select style="margin-right:10px; width: 200px;float: left" class="form-control" id="moduleSelector" name="module" title="">
+        </select>
+        <input type="text" style="margin-right:10px; width: 200px; float: left" placeholder="请输入名称关键字" id="queryKeyword" name="keyword" value="">
+        <input id="queryButton" style="margin-right:10px; width: 80px; float: left" onclick="query_result();" type="button" value="刷新" class="btn btn-primary"/>
+    </div>
+
+    <table style="table-layout: fixed" class="table table-striped detail-table" id="displayTable">
+        <tr>
+            <th style="width: 300px;">名称</th>
+            <th>发布时间</th>
+            <th>抓取时间</th>
+            <th>本地访问</th>
+            <th>查看源</th>
+        </tr>
+
+        <tr>
+            <td style="width: 300px">中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告</td>
+            <td>2016-10-21</td>
+            <td>2016-9-21</td>
+            <td><a class="btn btn-info detail-button" href="/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html" target="_blank">本地访问</a></td>
+            <td><a class="btn btn-info detail-button" href="http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm" target="_blank">查看源信息</a></td>
+        </tr>
+    </table>
+
+    <footer class="footer">
+        <small>
+            版权所有 © 2010-2016 北京信联云通科技有限责任公司
+        </small>
+        <nav>
+            <ul>
+                <li><a href="http://www.octlink.com" target="_blank">关于</a></li>
+                <li><a href="http://www.octlink.com" target="_blank">联系我们</a></li>
+                <li><a href="http://www.octlink.com" target="_blank">新闻</a></li>
+                <li><a href="http://www.octlink.com" target="_blank">帮助</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+</div>
+
+<script>
+
+    function updateTable() {
+
+    }
+
+    function updateWebSite() {
+        bodyStr = "";
+        webSiteSelector = $("#websiteSelector");
+        for (var i = 0; i < webSites.length; i++) {
+            website = webSites[i];
+            if (i == 0) {
+                bodyStr += "<option selected value=" + website["name"] + ">" + website["name"] + "</option>";
+            } else {
+                bodyStr += "<option value=" + website["name"] + ">" + website["name"] + "</option>";
+            }
+        }
+        webSiteSelector.html(bodyStr);
+    }
+
+    function getWebSite_byName(webSiteName) {
+        for (var i = 0; i < webSites.length; i++) {
+            website = webSites[i];
+            if (website["name"] == webSiteName) {
+                return website;
+            }
+        }
+        return null;
+    }
+
+    function getModules(webSiteName) {
+        website = getWebSite_byName(webSiteName);
+        if (website == null) {
+            return null;
+        }
+        return website["classes"];
+    }
+
+    function updateModules() {
+        websiteName = getSelectedOption("#websiteSelector");
+
+        bodyStr = "<option selected value='any'>任意</option>";
+
+        classes = getModules(websiteName);
+
+        if (classes == null) {
+            $("#moduleSelector").html(bodyStr);
+            return;
+        }
+
+        for (var i = 0; i < classes.length; i++) {
+            submodule = classes[i];
+            if (i == 0) {
+                bodyStr += "<option selected value=" + submodule["name"] + ">" + submodule["name"] + "</option>";
+            } else {
+                bodyStr += "<option value=" + submodule["name"] + ">" + submodule["name"] + "</option>";
+            }
+        }
+        $("#moduleSelector").html(bodyStr);
+    }
+
+    function append_page(item) {
+        bodyStr = "";
+        bodyStr += "<tr><td style='width: 400px'>" + item["name"] + "</td>";
+        bodyStr += "<td>" + item["publishTime"] + "</td>";
+        bodyStr += "<td>" + item["fetchTime"] + "</td>";
+        bodyStr += "<td><a target='_blank' class='btn btn-info detail-button' href='" + item["localUrl"] + "'>本地访问</a></td>";
+        bodyStr += "<td><a target='_blank' class='btn btn-info detail-button' href='" + item["url"] + "'>查看源</a></td>";
+        bodyStr += "</tr>";
+        return bodyStr;
+    }
+
+    function query_result() {
+
+        bodyStr = "<tr><th style=\"width: 400px;\">名称</th>";
+        bodyStr += "<th>发布时间</th><th>抓取时间</th><th>本地访问</th><th>查看源</th></tr>";
+
+        websiteName = getSelectedOption("#websiteSelector");
+        submoduleName = getSelectedOption("#moduleSelector");
+        keyword = $("#queryKeyword").val();
+
+        website = getWebSite_byName(websiteName);
+        if (website == null) {
+            return;
+        }
+
+        if (submoduleName == "any") {
+            pages = website["pages"];
+            for (i = 0; i < pages.length; i++) {
+                item = pages[i];
+                if ((keyword == "" || keyword == null) || item["name"].indexOf(keyword) != -1) {
+                    bodyStr += append_page(item);
+                }
+            }
+        }
+
+        classes = website["classes"];
+        if (classes == null) {
+            $("#displayTable").html(bodyStr);
+            return;
+        }
+
+        for (i = 0; i < classes.length; i++) {
+            submodule = classes[i];
+            if (submoduleName != "any" && submoduleName != submodule["name"]) {
+                continue;
+            }
+            pages = submodule["pages"];
+            for (j = 0; j < pages.length; j++) {
+                item = pages[j];
+                if ((keyword == "" || keyword == null) || item["name"].indexOf(keyword) != -1) {
+                    bodyStr += append_page(item);
+                }
+            }
+        }
+
+        $("#displayTable").html(bodyStr);
+    }
+
+    updateWebSite();
+    updateModules();
+    query_result();
+
+</script>
 
 </body>
 

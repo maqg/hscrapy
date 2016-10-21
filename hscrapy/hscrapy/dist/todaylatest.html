@@ -35,11 +35,54 @@
                 <li><a href="/dist/">仪表盘</a></li>
                 <li><a href="/dist/todaylatest.html">今日更新</a></li>
                 <li><a href="/dist/query.html">信息查询</a></li>
+                <li><a href="/dist/pages.html">网站信息</a></li>
             </ul>
         </nav>
     </div>
 </header>
 
+
+<script>
+    var todayStrList = "[";
+    todayStrList += "{\"name\": \"中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告\",";
+    todayStrList += "\"webSite\": \"中国政府采购网\",\"className\": \"招标公告（中央）\",";
+    todayStrList += "\"url\": \"http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm\",";
+    todayStrList += "\"localUrl\": \"/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html\",";
+    todayStrList += "\"publishTime\": \"2016-9-1\",\"fetchTime\": \"2016-10-21\"}";
+    todayStrList += ",";
+    todayStrList += "{\"name\": \"中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告\",";
+    todayStrList += "\"webSite\": \"中国政府采购网\",\"className\": \"招标公告（中央）\",";
+    todayStrList += "\"url\": \"http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm\",";
+    todayStrList += "\"localUrl\": \"/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html\",";
+    todayStrList += "\"publishTime\": \"2016-9-1\",\"fetchTime\": \"2016-10-21\"}";
+    todayStrList += "]";
+</script>
+
+<div class="container">
+
+    <h2 style="text-align: left">今日更新</h2>
+
+    <table style="table-layout: fixed" class="table table-striped detail-table" id="displayTable">
+        <tr>
+            <th style="width: 300px;">名称</th>
+            <th>网站</th>
+            <th>分类</th>
+            <th>发布时间</th>
+            <th>抓取时间</th>
+            <th>本地访问</th>
+            <th>查看源</th>
+        </tr>
+
+        <tr>
+            <td style="width: 300px">中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告</td>
+            <td>中国政府采购网</td>
+            <td>招标公告（中央）</td>
+            <td>2016-10-21</td>
+            <td>2016-9-21</td>
+            <td><a class="btn btn-info detail-button" href="/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html" target="_blank">本地访问</a></td>
+            <td><a class="btn btn-info detail-button" href="http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm" target="_blank">查看源信息</a></td>
+        </tr>
+    </table>
 
 <footer class="footer">
     <small>
@@ -54,6 +97,35 @@
         </ul>
     </nav>
 </footer>
+
+</div>
+
+<script>
+
+    function init() {
+        bodyStr = "";
+        items = JSON.parse(todayStrList);
+        displayTable = $("#displayTable");
+        bodyStr += "<tr><th style=\"width: 300px;\">名称</th>";
+        bodyStr += "<th>网站</th><th>分类</th><th>发布时间</th><th>抓取时间</th><th>本地访问</th><th>查看源</th></tr>";
+
+        for (var i = 0; i < items.length; i++) {
+            item = items[i];
+            bodyStr += "<tr><td style='width: 300px'>" + item["name"] + "</td>";
+            bodyStr += "<td>" + item["webSite"] + "</td>";
+            bodyStr += "<td>" + item["className"] + "</td>";
+            bodyStr += "<td>" + item["publishTime"] + "</td>";
+            bodyStr += "<td>" + item["fetchTime"] + "</td>";
+            bodyStr += "<td><a target='_blank' class='btn btn-info detail-button' href='" + item["localUrl"] + "'>本地访问</a></td>";
+            bodyStr += "<td><a target='_blank' class='btn btn-info detail-button' href='" + item["url"] + "'>查看源</a></td>";
+            bodyStr += "</tr>";
+        }
+        displayTable.html(bodyStr);
+    }
+
+    init();
+
+</script>
 
 </body>
 

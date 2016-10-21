@@ -45,14 +45,14 @@
 
 
 <script>
-    var todayStrList = "{\"网站数量\": 10,\"标书数量\": 100,\"今日更新\": 32}";
+    var todayStrList = "{\"中国政府采购网\": \"http://www.ccgp.gov.cn\",\"北京市政府采购中心\": \"http://www.bgpc.gov.cn/\",\"河北省政府采购网\": \"http://www.ccgp-hebei.gov.cn\"}";
 </script>
 
 <div class="container">
 
-    <h2 style="text-align: left">统计信息</h2>
+    <h2 style="text-align: left">网站信息</h2>
 
-    <table class="table table-striped detail-table" id="statisticsTable">
+    <table class="table table-striped detail-table" id="displayTable">
     </table>
 
     <footer class="footer">
@@ -75,17 +75,12 @@
     function init() {
         bodyStr = "";
         items = JSON.parse(todayStrList);
-        displayTable = $("#statisticsTable");
-        bodyStr += "<tr><th>属性</th><th>内容</th></tr>";
+        displayTable = $("#displayTable");
+        bodyStr += "<tr><th>名称</th><th>URL</th><th>访问</th></tr>";
         for (key in items) {
             bodyStr += "<tr><td>" + key + "</td>";
-            if (key == "网站数量") {
-                bodyStr += "<td><a class='btn btn-info detail-button' href='/dist/pages.html'>" + items[key] + "个</a></td>";
-            } else if (key == "标书数量") {
-                bodyStr += "<td><a class='btn btn-info detail-button' href='/dist/query.html'>" + items[key] + "个</a></td>";
-            } else {
-                bodyStr += "<td><a class='btn btn-info detail-button' href='/dist/todaylatest.html'>" + items[key] + "个</a></td>";
-            }
+            bodyStr += "<td>" + items[key] + "</td>";
+            bodyStr += "<td><a target='_blank' class='btn btn-info detail-button' href='" + items[key] + "'>访问</a></td>";
             bodyStr += "</tr>";
         }
         displayTable.html(bodyStr);
