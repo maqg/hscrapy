@@ -47,7 +47,7 @@ class SubwaySpider(scrapy.Spider):
 	def parseStationName(self, item):
 		segs = item.xpath("text()").extract()
 
-		return "".join(segs).replace("\r", "").replace("\n", "").replace(" ", "")
+		return "".join(segs).replace("\r", "").replace("\n", "").replace(" ", "").replace("生物医院", "生物医药")
 
 	def processTimeTable(self, time_tables, line, timeTableSettings):
 
@@ -64,30 +64,31 @@ class SubwaySpider(scrapy.Spider):
 			elif (line["name"] in ("4号线", "大兴线")):
 				stationName2 = self.parseStationName(stationTable[1])
 				station2 = self.findStation(line, stationName2)
-				if (not station2):
-					continue
-				lastTrain2 = station2.get("lastTrain") or []
-				station2["lastTrain"] = lastTrain2
+				if (station2):
+					lastTrain2 = station2.get("lastTrain") or []
+					station2["lastTrain"] = lastTrain2
 
 			station = self.findStation(line, stationName)
-			if (not station):
-				self.log("got station from line error [%s]" % stationName)
-				continue
-
-			lastTrain = station.get("lastTrain") or []
-			station["lastTrain"] = lastTrain
+			if (station):
+				lastTrain = station.get("lastTrain") or []
+				station["lastTrain"] = lastTrain
 
 			timeValues = item.xpath("td")
 			timeHandler = timeTableSettings["func"]
 			if (timeHandler):
 				if (line["name"] == "10号线"):
-					timeHandler(timeValues[:4], lastTrain, timeTableSettings["titles"])
-					timeHandler(timeValues[4:], lastTrain2, timeTableSettings["titles"])
+					if (station):
+						timeHandler(timeValues[:4], lastTrain, timeTableSettings["titles"])
+					if (station2):
+						timeHandler(timeValues[4:], lastTrain2, timeTableSettings["titles"])
 				elif (line["name"] in ("4号线", "大兴线")):
-					timeHandler(timeValues[:2], lastTrain, timeTableSettings["titles"])
-					timeHandler(timeValues[2:], lastTrain2, timeTableSettings["titles"])
+					if (station):
+						timeHandler(timeValues[:2], lastTrain, timeTableSettings["titles"])
+					if (station2):
+						timeHandler(timeValues[2:], lastTrain2, timeTableSettings["titles"])
 				else:
-					timeHandler(timeValues, lastTrain, timeTableSettings["titles"])
+					if (station):
+						timeHandler(timeValues, lastTrain, timeTableSettings["titles"])
 				line["timeTableDesc"] = timeTableSettings.get("desc") or ""
 
 	def findLine(self, lineName):
@@ -122,7 +123,8 @@ class SubwaySpider(scrapy.Spider):
 			if (timeTableSettings):
 				self.processTimeTable(time_tables, line, timeTableSettings)
 
-		self.write()
+			if (lineName == "机场线"):
+				self.write()
 
 	def processDistance(self, distances, line):
 		lastStationName = "NotSet"
@@ -190,5 +192,3 @@ class SubwaySpider(scrapy.Spider):
 
 			distances = table.xpath("tbody/tr")
 			self.processDistance(distances, line)
-
-		self.write()
