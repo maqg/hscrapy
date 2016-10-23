@@ -2,6 +2,7 @@
 
 
 def timetable_handler_normal(timeValues, lastTrain, titles):
+
 	titleCount = len(titles)
 
 	values = []
@@ -9,24 +10,20 @@ def timetable_handler_normal(timeValues, lastTrain, titles):
 		timeValue = timeTable.xpath("text()").extract()[0].replace("\r", "").replace("\n", "").replace(" ", "")
 		values.append(timeValue)
 
-	valueCount = len(values)
-
 	if (not titleCount):
 		return
 
-	valuesPerLine = valueCount / titleCount
+	lastTrain.append({
+		"direction": titles[0]["direction"],
+		"first": values[0],
+		"last": values[1]
+	})
 
-	if (titleCount != valuesPerLine):
-		print("count not match[%d:%d]" % (titleCount, valuesPerLine))
-		return
-
-	for i in range(0, valuesPerLine):
-		item = {
-			"direction": titles[i]["direction"],
-			"first": values[i * 2],
-			"last": values[i * 2 + 1]
-		}
-		lastTrain.append(item)
+	lastTrain.append({
+		"direction": titles[1]["direction"],
+		"first": values[2],
+		"last": values[3]
+	})
 
 
 def timetable_handler_line13(timeValues, lastTrain, titles):
@@ -126,7 +123,7 @@ def timetable_handler_changeping(timeValues, lastTrain, titles):
 
 	item2 = {
 		"direction": titles[2]["direction"],
-		"first": values[2],
+		"first": values[1],
 		"last": values[4]
 	}
 
