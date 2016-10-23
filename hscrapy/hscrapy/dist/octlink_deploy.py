@@ -4,10 +4,19 @@ import json
 import os
 
 from hscrapy.utils.commonUtil import fileToObj, transToStr
+from hscrapy.utils.timeUtil import getStrDate, getCurrentStrDate
 
 SOURCE_FONFIG_FILE = "octlink_sources_temp.json"
 
 PC_CONFIG_FILE = "../pc.json"
+
+INDEX_FILE = "index_template.html"
+TODAYLATEST_FILE = "todaylatest_template.html"
+QUERY_FILE = "query_template.html"
+PAGES_FILE = "pages_template.html"
+
+
+pageCount = 0
 
 
 def parseUrl(filePath):
@@ -29,15 +38,16 @@ def parseUrl(filePath):
 	return "#"
 
 def parseFetchTime(filePath):
-	return "NOTSETTTT"
+	return getStrDate(os.path.getctime(filePath) * 1000)
 
-def append_pages(website, page=None):
-	website["pages"] = []
+def append_pages(submodule, todayList, today, site=None):
 
-	if (page):
-		baseDir = page["name"] + os.sep + website["name"]
+	submodule["pages"] = []
+
+	if (site):
+		baseDir = site["name"] + os.sep + submodule["name"]
 	else:
-		baseDir = website["name"]
+		baseDir = submodule["name"]
 
 	for file in os.listdir(baseDir):
 		if (os.path.isdir(baseDir + os.sep + file)):
@@ -46,54 +56,97 @@ def append_pages(website, page=None):
 		if (file.endswith("_URL.html")):
 			continue
 
-		page = {
+		item = {
 			"name": "".join(file.split("_")[1:])[:-5],
 			"url": parseUrl(baseDir + os.sep + file),
 			"publishTime": file.split("_")[0],
 			"fetchTime": parseFetchTime(baseDir + os.sep + file)
 		}
 
-		website["pages"].append(page)
+		submodule["pages"].append(item)
 
-def append_classes(website, page):
-	for subUrl in page["subUrls"]:
+		global pageCount
+		pageCount += 1
+
+		if (site and today == item["fetchTime"]):
+			item["webSite"] = site["name"]
+			item["className"] = submodule["name"]
+			todayList.append(item)
+
+def append_classes(website, site, todayList, today):
+
+	for subUrl in site["subUrls"]:
 		submodule = {
 			"name": subUrl["name"],
 			"url": subUrl["url"],
 		}
 		website["classes"].append(submodule)
 
-		append_pages(submodule, page)
+		append_pages(submodule, todayList, today, site)
+
+
+def getDatas(filePath):
+	fd = open(filePath, "r")
+	segs = fd.read().split("__DATA__")
+	fd.close()
+	return segs
+
+
+def write_index(statistics):
+
+	segs = getDatas(INDEX_FILE)
+
+	fd = open(INDEX_FILE.replace("_template", ""), "w+")
+	fd.write(segs[0])
+	fd.write(json.dumps(statistics, indent=4, ensure_ascii=False))
+	fd.write(segs[1])
+	fd.close()
+
 
 
 def deploy_octlink():
 
+	today = getCurrentStrDate()
+
+	todayLatest = []
+	statistics = {}
+	webSites = []
+
 	octlink_sources = {
-		"todayLatest": [],
-		"webSites": [],
-		"statistics": {}
+		"todayLatest": todayLatest,
+		"webSites": webSites,
+		"statistics": statistics
 	}
 
 	pcObjs = fileToObj(PC_CONFIG_FILE)
 
-	for page in pcObjs:
-		if (not page["state"]):
+	for site in pcObjs:
+		if (not site["state"]):
 			continue
 		website = {
-			"name": page["name"],
-			"url": page["url"],
+			"name": site["name"],
+			"url": site["url"],
 			"classes": []
 		}
 
-		append_classes(website, page)
+		append_classes(website, site, todayLatest, today)
 
-		append_pages(website)
+		append_pages(website, todayLatest, today)
 
-		octlink_sources["webSites"].append(website)
+		webSites.append(website)
+
+	statistics["网站数量"] = len(webSites)
+	statistics["今日更新"] = len(todayLatest)
+	statistics["标书数量"] = pageCount
+
+
+	write_index(statistics)
 
 	fd = open(SOURCE_FONFIG_FILE, "w+")
 	fd.write(transToStr(octlink_sources, indent=2))
 	fd.close()
+
+
 
 	print("generate pages OK")
 
