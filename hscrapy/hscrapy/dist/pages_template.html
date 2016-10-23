@@ -45,7 +45,7 @@
 
 
 <script>
-    var todayStrList = "{\"中国政府采购网\": \"http://www.ccgp.gov.cn\",\"北京市政府采购中心\": \"http://www.bgpc.gov.cn/\",\"河北省政府采购网\": \"http://www.ccgp-hebei.gov.cn\"}";
+    var sourceData = __DATA__;
 </script>
 
 <div class="container">
@@ -74,7 +74,7 @@
 
     function init() {
         bodyStr = "";
-        items = JSON.parse(todayStrList);
+        items = sourceData;
         displayTable = $("#displayTable");
         bodyStr += "<tr><th>名称</th><th>URL</th><th>访问</th></tr>";
         for (key in items) {

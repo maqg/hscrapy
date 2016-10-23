@@ -59,6 +59,7 @@ def append_pages(submodule, todayList, today, site=None):
 		item = {
 			"name": "".join(file.split("_")[1:])[:-5],
 			"url": parseUrl(baseDir + os.sep + file),
+			"localUrl": baseDir + os.sep + file,
 			"publishTime": file.split("_")[0],
 			"fetchTime": parseFetchTime(baseDir + os.sep + file)
 		}
@@ -102,6 +103,32 @@ def write_index(statistics):
 	fd.write(segs[1])
 	fd.close()
 
+def write_query(data):
+	segs = getDatas(QUERY_FILE)
+	fd = open(QUERY_FILE.replace("_template", ""), "w+")
+	fd.write(segs[0])
+	fd.write(json.dumps(data, indent=4, ensure_ascii=False))
+	fd.write(segs[1])
+	fd.close()
+
+
+def write_todaylatest(data):
+	segs = getDatas(TODAYLATEST_FILE)
+	fd = open(TODAYLATEST_FILE.replace("_template", ""), "w+")
+	fd.write(segs[0])
+	fd.write(json.dumps(data, indent=4, ensure_ascii=False))
+	fd.write(segs[1])
+	fd.close()
+
+
+def write_pages(data):
+	segs = getDatas(PAGES_FILE)
+	fd = open(PAGES_FILE.replace("_template", ""), "w+")
+	fd.write(segs[0])
+	fd.write(json.dumps(data, indent=4, ensure_ascii=False))
+	fd.write(segs[1])
+	fd.close()
+
 
 
 def deploy_octlink():
@@ -111,6 +138,8 @@ def deploy_octlink():
 	todayLatest = []
 	statistics = {}
 	webSites = []
+
+	pages = {}
 
 	octlink_sources = {
 		"todayLatest": todayLatest,
@@ -135,12 +164,19 @@ def deploy_octlink():
 
 		webSites.append(website)
 
+		pages[site["name"]] = site["url"]
+
 	statistics["网站数量"] = len(webSites)
 	statistics["今日更新"] = len(todayLatest)
 	statistics["标书数量"] = pageCount
 
-
 	write_index(statistics)
+
+	write_query(webSites)
+
+	write_pages(pages)
+
+	write_todaylatest(todayLatest)
 
 	fd = open(SOURCE_FONFIG_FILE, "w+")
 	fd.write(transToStr(octlink_sources, indent=2))

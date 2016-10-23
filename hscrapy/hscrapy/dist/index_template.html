@@ -45,7 +45,7 @@
 
 
 <script>
-    var todayStrList = __DATA__;
+    var sourceData = __DATA__;
 </script>
 
 <div class="container">
@@ -74,7 +74,7 @@
 
     function init() {
         bodyStr = "";
-        items = JSON.parse(todayStrList);
+        items = sourceData;
         displayTable = $("#statisticsTable");
         bodyStr += "<tr><th>属性</th><th>内容</th></tr>";
         for (key in items) {

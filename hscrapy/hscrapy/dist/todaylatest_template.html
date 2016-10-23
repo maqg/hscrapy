@@ -43,19 +43,7 @@
 
 
 <script>
-    var todayStrList = "[";
-    todayStrList += "{\"name\": \"中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告\",";
-    todayStrList += "\"webSite\": \"中国政府采购网\",\"className\": \"招标公告（中央）\",";
-    todayStrList += "\"url\": \"http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm\",";
-    todayStrList += "\"localUrl\": \"/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html\",";
-    todayStrList += "\"publishTime\": \"2016-9-1\",\"fetchTime\": \"2016-10-21\"}";
-    todayStrList += ",";
-    todayStrList += "{\"name\": \"中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告\",";
-    todayStrList += "\"webSite\": \"中国政府采购网\",\"className\": \"招标公告（中央）\",";
-    todayStrList += "\"url\": \"http://www.ccgp.gov.cn/cggg/zygg/zbgg//201610/t20161010_7409184.htm\",";
-    todayStrList += "\"localUrl\": \"/dist/中国政府采购网/中标公告（中央）/2016-10-09_中电科新型智慧城市研究院有限公司深圳城市运营中心建设项目信息化工程监理服务采购项目中标公告.html\",";
-    todayStrList += "\"publishTime\": \"2016-9-1\",\"fetchTime\": \"2016-10-21\"}";
-    todayStrList += "]";
+    var sourceData = __DATA__;
 </script>
 
 <div class="container">
@@ -104,7 +92,7 @@
 
     function init() {
         bodyStr = "";
-        items = JSON.parse(todayStrList);
+        items = sourceData;
         displayTable = $("#displayTable");
         bodyStr += "<tr><th style=\"width: 300px;\">名称</th>";
         bodyStr += "<th>网站</th><th>分类</th><th>发布时间</th><th>抓取时间</th><th>本地访问</th><th>查看源</th></tr>";
