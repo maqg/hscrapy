@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+import sys
+
+sys.path.append("../../")
 
 from hscrapy.utils.commonUtil import fileToObj, transToStr
 from hscrapy.utils.timeUtil import getStrDate, getCurrentStrDate
