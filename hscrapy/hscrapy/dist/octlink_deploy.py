@@ -69,14 +69,27 @@ def append_pages(submodule, todayList, today, site=None):
 		global pageCount
 		pageCount += 1
 
-		if (site and today == item["fetchTime"]):
+		if (site and today == item["publishTime"]):
 			item["webSite"] = site["name"]
 			item["className"] = submodule["name"]
 			todayList.append(item)
 
+	submodule["pages"].sort(lambda x,y : -cmp(x["publishTime"], y["publishTime"]))
+
+def findSubModule(classes, moduleName):
+	for submodule in classes:
+		if (submodule["name"] == moduleName):
+			return submodule
+	return None
+
 def append_classes(website, site, todayList, today):
 
 	for subUrl in site["subUrls"]:
+
+		module = findSubModule(website["classes"], subUrl["name"])
+		if (module):
+			continue
+
 		submodule = {
 			"name": subUrl["name"],
 			"url": subUrl["url"],

@@ -262,6 +262,12 @@ class OctlinkSpider(scrapy.Spider):
 				"time": timeInfo,
 			}
 			self.titles[subUrl] = title
+
+			dstPath = title["dir"] + os.sep + title["time"] + "_" + title["name"] + ".html"
+			if (os.path.exists(dstPath)):
+				self.log("this url already exist, just skip it %s" % subUrl)
+				continue
+
 			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
 
 

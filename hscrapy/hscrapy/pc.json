@@ -1,7 +1,7 @@
 [
   {
     "name": "北京市政府采购中心",
-    "url": "http://www.bgpc.gov.cn/",
+    "url": "http://www.bgpc.gov.cn",
     "state": true,
     "publishTimeRegex": "//ul/li/span[@class='news_time']",
     "titleRegex": "//ul/li/span[@class='news_title']/a",
@@ -247,7 +247,7 @@
   },
   {
     "name": "山东政府采购网",
-    "url": "http://www.ccgp-shandong.gov.cn/",
+    "url": "http://www.ccgp-shandong.gov.cn",
     "state": true,
     "publishTimeRegex": "//table/tr/td[@class='Font9']",
     "titleRegex": "//table/tr/td[@class='Font9']/a",

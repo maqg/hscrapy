@@ -56,6 +56,8 @@
         </select>
         <select style="margin-right:10px; width: 200px;float: left" class="form-control" id="moduleSelector" name="module" title="">
         </select>
+        <select style="margin-right:10px; width: 200px;float: left" class="form-control" id="dateSelector" name="module" title="">
+        </select>
         <input type="text" style="margin-right:10px; width: 200px; float: left" placeholder="请输入名称关键字" id="queryKeyword" name="keyword" value="">
         <input id="queryButton" style="margin-right:10px; width: 80px; float: left" onclick="query_result();" type="button" value="刷新" class="btn btn-primary"/>
     </div>
@@ -140,10 +142,40 @@
         $("#moduleSelector").html(bodyStr);
     }
 
+    function updateDates() {
+
+        bodyStr = "<option value='65535'>任意</option>";
+
+        bodyStr += "<option value='7'>最近一周</option>";
+
+        bodyStr += "<option selected value='30'>最近一月</option>";
+
+        bodyStr += "<option value='365'>最近一年</option>";
+
+        $("#dateSelector").html(bodyStr);
+    }
+
+    function getDays(dateStr) {
+        segs = dateStr.split("-");
+        days = parseInt(segs[0]) * 365 + parseInt(segs[1]) * 30 + parseInt(segs[2]);
+        return days;
+    }
+
     function append_page(item) {
+
+
         bodyStr = "";
         bodyStr += "<tr><td style='width: 400px'>" + item["name"] + "</td>";
-        bodyStr += "<td>" + item["publishTime"] + "</td>";
+
+        publishDays = getDays(item["publishTime"]);
+
+        if (publishDays + 60 < nowDays) {
+            bodyStr += "<td style='color:red'>" + item["publishTime"] + "</td>";
+        } else if (publishDays + 30 < nowDays) {
+            bodyStr += "<td style='color: #d58512'>" + item["publishTime"] + "</td>";
+        } else {
+            bodyStr += "<td style='color: darkgreen'>" + item["publishTime"] + "</td>";
+        }
         bodyStr += "<td>" + item["fetchTime"] + "</td>";
         bodyStr += "<td><a target='_blank' class='btn btn-info detail-button' href='" + item["localUrl"] + "'>本地访问</a></td>";
         bodyStr += "<td><a target='_blank' class='btn btn-info detail-button' href='" + item["url"] + "'>查看源</a></td>";
@@ -158,6 +190,9 @@
 
         websiteName = getSelectedOption("#websiteSelector");
         submoduleName = getSelectedOption("#moduleSelector");
+
+        dateValue = parseInt(getSelectedOption("#dateSelector"));
+
         keyword = $("#queryKeyword").val();
 
         website = getWebSite_byName(websiteName);
@@ -169,6 +204,11 @@
             pages = website["pages"];
             for (i = 0; i < pages.length; i++) {
                 item = pages[i];
+
+                if (getDays(item["publishTime"]) + dateValue < nowDays) {
+                    continue;
+                }
+
                 if ((keyword == "" || keyword == null) || item["name"].indexOf(keyword) != -1) {
                     bodyStr += append_page(item);
                 }
@@ -189,6 +229,11 @@
             pages = submodule["pages"];
             for (j = 0; j < pages.length; j++) {
                 item = pages[j];
+
+                if (getDays(item["publishTime"]) + dateValue < nowDays) {
+                    continue;
+                }
+
                 if ((keyword == "" || keyword == null) || item["name"].indexOf(keyword) != -1) {
                     bodyStr += append_page(item);
                 }
@@ -198,8 +243,12 @@
         $("#displayTable").html(bodyStr);
     }
 
+    var nowDays = getDays(new Date().toLocaleDateString().replace("/", "-").replace("/", "-"));
+
     updateWebSite();
     updateModules();
+    updateDates();
+
     query_result();
 
 </script>
