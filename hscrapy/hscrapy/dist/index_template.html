@@ -83,8 +83,10 @@
                 bodyStr += "<td><a class='btn btn-info detail-button' href='pages.html'>" + items[key] + "个</a></td>";
             } else if (key == "标书数量") {
                 bodyStr += "<td><a class='btn btn-info detail-button' href='query.html'>" + items[key] + "个</a></td>";
-            } else {
+            } else if (key == "今日更新") {
                 bodyStr += "<td><a class='btn btn-info detail-button' href='todaylatest.html'>" + items[key] + "个</a></td>";
+            } else {
+                bodyStr += "<td>" + items[key] + "</a></td>";
             }
             bodyStr += "</tr>";
         }
