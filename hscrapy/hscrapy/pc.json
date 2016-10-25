@@ -1,5 +1,43 @@
 [
   {
+    "name": "北京市财政局",
+    "url": "http://www.bjcz.gov.cn",
+    "state": true,
+    "parser": "beijingcaizheng",
+    "publishTimeRegex": "//d/t/a",
+    "titleRegex": "//d/t",
+    "subUrls": [
+      {
+        "name": "招标公告",
+        "url": "http://www.bjcz.gov.cn/zfcg/cggg/zbgg/index.htm"
+      },
+      {
+        "name": "采购合同",
+        "url": "http://www.bjcz.gov.cn/zfcg/cggg/cghtgg/index.htm"
+      },
+      {
+        "name": "其他公告",
+        "url": "http://www.bjcz.gov.cn/zfcg/cggg/qtgg/index.htm"
+      },
+      {
+        "name": "中标公告",
+        "url": "http://www.bjcz.gov.cn/zfcg/cggg/zbcjgg/index.htm"
+      },
+      {
+        "name": "采购通知通告",
+        "url": "http://www.bjcz.gov.cn/zfcg/cggg/cgtztg/index.htm"
+      },
+      {
+        "name": "单一来源",
+        "url": "http://www.bjcz.gov.cn/zfcg/cggg/dylygs/index.htm"
+      },
+      {
+        "name": "资格预审",
+        "url": "http://www.bjcz.gov.cn/zfcg/cggg/zgysgg/index.htm"
+      }
+    ]
+  },
+  {
     "name": "北京市政府采购中心",
     "url": "http://www.bgpc.gov.cn",
     "state": true,
@@ -46,7 +84,7 @@
       },
       {
         "name": "招标公告（中央）",
-        "pages": 10,
+        "pages": 40,
         "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/index_%d.htm"
       },
       {
@@ -55,7 +93,7 @@
       },
       {
         "name": "中标公告（中央）",
-        "pages": 10,
+        "pages": 20,
         "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg/index_%d.htm"
       },
       {
@@ -64,7 +102,7 @@
       },
       {
         "name": "更正公告（中央）",
-        "pages": 10,
+        "pages": 20,
         "url": "http://www.ccgp.gov.cn/cggg/zygg/gzgg/index_%d.htm"
       },
       {
@@ -73,7 +111,7 @@
       },
       {
         "name": "询价公告（中央）",
-        "pages": 10,
+        "pages": 20,
         "url": "http://www.ccgp.gov.cn/cggg/zygg/xjgg/index_%d.htm"
       },
       {
@@ -82,7 +120,7 @@
       },
       {
         "name": "邀请招标公告（中央）",
-        "pages": 10,
+        "pages": 20,
         "url": "http://www.ccgp.gov.cn/cggg/zygg/yqzbgg/index_%d.htm"
       },
       {
@@ -91,7 +129,7 @@
       },
       {
         "name": "成交公告（中央）",
-        "pages": 10,
+        "pages": 20,
         "url": "http://www.ccgp.gov.cn/cggg/zygg/cjgg/index_%d.htm"
       },
       {
@@ -100,7 +138,7 @@
       },
       {
         "name": "废标公告（中央）",
-        "pages": 10,
+        "pages": 20,
         "url": "http://www.ccgp.gov.cn/cggg/zygg/fblbgg/index_%d.htm"
       },
       {
@@ -109,7 +147,7 @@
       },
       {
         "name": "招标公告（地方）",
-        "pages": 10,
+        "pages": 30,
         "url": "http://www.ccgp.gov.cn/cggg/dfgg/gkzb/index_%d.htm"
       },
       {
@@ -118,7 +156,7 @@
       },
       {
         "name": "中标公告（地方）",
-        "pages": 10,
+        "pages": 20,
         "url": "http://www.ccgp.gov.cn/cggg/dfgg/zbgg/index_%d.htm"
       },
       {

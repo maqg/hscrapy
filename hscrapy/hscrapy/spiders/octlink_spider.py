@@ -68,6 +68,19 @@ class OctlinkSpider(scrapy.Spider):
 		else:
 			return url
 
+	def getParser(self, parserName):
+
+		PARSER_LIST = {
+			"hebeisheng": self.parser_hebeisheng,
+			"beijingcaizheng": self.parser_beijingcaizheng
+		}
+
+		if (not parserName):
+			return self.parse_new
+
+		return PARSER_LIST.get(parserName) or self.parse_new
+
+
 	def handUrl(self, url, parent=None):
 
 		pages = url.get("pages") or 0
@@ -78,10 +91,7 @@ class OctlinkSpider(scrapy.Spider):
 			}
 
 			if (parent):
-				if (parent.get("parser")):
-					request["parser"] = self.parser_hebeisheng
-				else:
-					request["parser"] = self.parse_new
+				request["parser"] = self.getParser(parent.get("parser"))
 			else:
 				request["parser"] = self.parse
 
@@ -377,6 +387,54 @@ class OctlinkSpider(scrapy.Spider):
 				"dir": self.getDir_byUrl(baseUrl),
 				"name": name,
 				"time": "NotSet"
+			}
+			self.titles[subUrl] = title
+			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
+
+	def parser_beijingcaizheng(self, response):
+
+		urls = []
+		dates = []
+		titles = []
+
+		lines = response.body.split("\n")
+		for i in range(0, len(lines)):
+			data = lines[i].strip()
+			if (data.find("CDATA") != -1):
+				cdata = data[24:-7]
+				try:
+					titles.append(cdata.split(">")[-1].decode("gb2312"))
+				except:
+					continue
+				urls.append(cdata.split("\"")[0])
+				dates.append(lines[i + 1].strip().replace("\r", ""))
+
+		baseUrl = response.url
+		self.log(baseUrl)
+
+		urlSettings = self.getUrlSettings(baseUrl)
+		if (not urlSettings):
+			self.log("no url settings found for url %s " % baseUrl)
+			return
+
+		for i in range(0, len(titles)):
+			url = urls[i]
+			name = titles[i]
+			publishTime = dates[i]
+
+			if (not self.matchRules(name)):
+				continue
+
+			newBaseUrl = baseUrl.split("index")[0]
+			subUrl = newBaseUrl + url
+
+			if (self.getTitle(subUrl)): # already read it
+				continue
+
+			title = {
+				"dir": self.getDir_byUrl(baseUrl),
+				"name": name,
+				"time": publishTime,
 			}
 			self.titles[subUrl] = title
 			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)

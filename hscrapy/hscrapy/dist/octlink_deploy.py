@@ -7,7 +7,7 @@ import sys
 sys.path.append("../../")
 
 from hscrapy.utils.commonUtil import fileToObj, transToStr
-from hscrapy.utils.timeUtil import getStrDate, getCurrentStrDate
+from hscrapy.utils.timeUtil import getStrDate, getCurrentStrDate, getCurrentStrTime
 
 SOURCE_FONFIG_FILE = "octlink_sources_temp.json"
 
@@ -185,6 +185,7 @@ def deploy_octlink():
 	statistics["网站数量"] = len(webSites)
 	statistics["今日更新"] = len(todayLatest)
 	statistics["标书数量"] = pageCount
+	statistics["上次更新时间"] = getCurrentStrTime()
 
 	write_index(statistics)
 
@@ -197,8 +198,6 @@ def deploy_octlink():
 	fd = open(SOURCE_FONFIG_FILE, "w+")
 	fd.write(transToStr(octlink_sources, indent=2))
 	fd.close()
-
-
 
 	print("generate pages OK")
 
