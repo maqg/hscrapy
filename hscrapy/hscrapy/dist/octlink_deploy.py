@@ -7,7 +7,7 @@ import sys
 sys.path.append("../../")
 
 from hscrapy.utils.commonUtil import fileToObj, transToStr
-from hscrapy.utils.timeUtil import getStrDate, getCurrentStrDate, getCurrentStrTime
+from hscrapy.utils.timeUtil import getStrDate, getCurrentStrDate, getCurrentStrTime, get_current_time
 
 SOURCE_FONFIG_FILE = "octlink_sources_temp.json"
 
@@ -40,8 +40,11 @@ def parseUrl(filePath):
 
 	return "#"
 
+def getFetchMiliSeconds(filePath):
+	return os.path.getctime(filePath) * 1000
+
 def parseFetchTime(filePath):
-	return getStrDate(os.path.getctime(filePath) * 1000)
+	return getStrDate(getFetchMiliSeconds(filePath))
 
 def append_pages(submodule, todayList, today, site=None):
 
@@ -59,12 +62,18 @@ def append_pages(submodule, todayList, today, site=None):
 		if (file.endswith("_URL.html")):
 			continue
 
+		filePath = baseDir + os.sep + file
+
+		# skip file 30 days before
+		if (get_current_time() - getFetchMiliSeconds(filePath) > 30 * 24 * 60 * 60 * 1000):
+			continue
+
 		item = {
 			"name": "".join(file.split("_")[1:])[:-5],
 			"url": parseUrl(baseDir + os.sep + file),
 			"localUrl": baseDir + os.sep + file,
 			"publishTime": file.split("_")[0],
-			"fetchTime": parseFetchTime(baseDir + os.sep + file)
+			"fetchTime": parseFetchTime(filePath)
 		}
 
 		submodule["pages"].append(item)
