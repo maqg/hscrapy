@@ -34,7 +34,6 @@ KEYWORDS = [
 	u"分校",
 	u"小学",
 	u"高中",
-	u"职业",
 	u"云桌面",
 	u"存储",
 	u"服务器",
@@ -296,7 +295,7 @@ class OctlinkSpider(scrapy.Spider):
 		items = response.xpath(regex)
 		for item in items:
 			datas = item.xpath("text()").extract()
-			data = "".join(datas).split(" ")[0].replace("\r", "").replace("\n", "").replace("\"", "")
+			data = "".join(datas).split(" ")[0].replace("\r", "").replace("\n", "").replace("\"", "").replace("[","").replace("/", "-").replace("]", "")
 			if (data.startswith("20")):
 				publishTimes.append(data)
 		return publishTimes

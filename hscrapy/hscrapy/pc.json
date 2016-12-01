@@ -339,5 +339,43 @@
         "url": "http://www.ccgp-tianjin.gov.cn/portal/topicView.do?method=view&view=Infor&id=1665&ver=2&st=1&stmp=1476952945918"
       }
     ]
+  },
+  {
+    "name": "保定市政府招标采购",
+    "state": true,
+    "url": "http://www.bd.gov.cn/",
+    "publishTimeRegex": "//table[@class='list']/tr/td[contains(.,'2016')]",
+    "titleRegex": "//table[@class='list']/tr/td/a",
+    "subUrls":[
+      {
+        "name": "招标公告",
+        "pages": 5,
+        "url": "http://www.bd.gov.cn/index.do?view=rsrmlist&ccid=382&page=%d"
+      }
+    ]
+  },
+  {
+    "name": "廊坊市人民政府采购服务中心",
+    "state": true,
+    "url": "http://www.zfcg.lfang.gov.cn/",
+    "publishTimeRegex": "//ul/li/span[contains(.,'20')]",
+    "titleRegex": "//ul/li/a",
+    "subUrls":[
+      {
+        "name": "市直招标公告",
+        "pages": 5,
+        "url": "http://www.zfcg.lfang.gov.cn/Article/ShowClass.asp?ClassID=53&page=%d"
+      },
+      {
+        "name": "区县招标公告",
+        "pages": 5,
+        "url": "http://www.zfcg.lfang.gov.cn/Article/ShowClass.asp?ClassID=54&page=%d"
+      },
+      {
+        "name": "招标结果公告",
+        "pages": 5,
+        "url": "http://www.zfcg.lfang.gov.cn/Article/ShowClass.asp?ClassID=55&page=%d"
+      }
+    ]
   }
 ]
