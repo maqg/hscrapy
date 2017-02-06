@@ -379,7 +379,7 @@
     "name": "保定市政府招标采购",
     "state": true,
     "url": "http://www.bd.gov.cn/",
-    "publishTimeRegex": "//table[@class='list']/tr/td[contains(.,'2016')]",
+    "publishTimeRegex": "//table[@class='list']/tr/td[contains(.,'20')]",
     "titleRegex": "//table[@class='list']/tr/td/a",
     "subUrls":[
       {
