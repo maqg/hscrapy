@@ -3,6 +3,7 @@
 
 import os
 import scrapy
+from scrapy.http import FormRequest
 
 from hscrapy.settings import PS_CONFIG, DEST_DIR
 from hscrapy.utils.commonUtil import fileToObj
@@ -34,13 +35,13 @@ KEYWORDS = [
 	u"分校",
 	u"小学",
 	u"高中",
-	u"职业",
 	u"云桌面",
 	u"存储",
 	u"服务器",
 	u"教室"
 ]
 
+PAGE_TIANJIN = 0
 
 class OctlinkSpider(scrapy.Spider):
 
@@ -144,7 +145,10 @@ class OctlinkSpider(scrapy.Spider):
 		for url in urlObjs:
 			if (not url.get("state")):
 				continue
-			self.handUrl(url)
+			if (url.get("parser") != "tianjin"):
+				self.handUrl(url)
+			else:
+				self.handle_tianjin(url)
 
 	def start_requests(self):
 		self.loadUrls()
@@ -296,7 +300,7 @@ class OctlinkSpider(scrapy.Spider):
 		items = response.xpath(regex)
 		for item in items:
 			datas = item.xpath("text()").extract()
-			data = "".join(datas).split(" ")[0].replace("\r", "").replace("\n", "").replace("\"", "")
+			data = "".join(datas).split(" ")[0].replace("\r", "").replace("\n", "").replace("\"", "").replace("[","").replace("/", "-").replace("]", "")
 			if (data.startswith("20")):
 				publishTimes.append(data)
 		return publishTimes
@@ -448,3 +452,115 @@ class OctlinkSpider(scrapy.Spider):
 			}
 			self.titles[subUrl] = title
 			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
+
+	def handle_tianjin(self, url, parent=None):
+
+		print("handle_tianjin")
+		pages = url.get("pages") or 0
+
+		global PAGE_TIANJIN
+		PAGE_TIANJIN = pages
+
+		request = {
+			"name": url["name"],
+		}
+
+		if (parent):
+			request["parser"] = self.parser_tianjin
+		else:
+			request["parser"] = self.parse_item
+
+		request["url"] = url["url"]
+
+		self.requestList.append(request)
+
+		for pId in range(1, pages + 2):
+			urlObj = {
+				"name": url["name"],
+			}
+
+			urlObj["url"] = url["url"]
+
+			if (parent):
+				urlObj["dir"] = DEST_DIR + os.sep + parent["name"] + os.sep + url["name"]
+				urlObj["parent"] = parent["url"]
+			else:
+				urlObj["dir"] = DEST_DIR + os.sep + url["name"]
+				urlObj["parent"] = url["url"]
+
+			if (not os.path.exists(urlObj["dir"])):
+				os.makedirs(urlObj["dir"])
+
+			self.urlSettings[urlObj["url"]] = urlObj
+
+		if (url.has_key("subUrls")):
+			for subUrl in url["subUrls"]:
+				self.handle_tianjin(subUrl, url)
+
+	def parse_item(self, response):
+
+		print("parse_item response.url %s" % response.url)
+
+	def parser_tianjin(self, response):
+
+		baseUrl = response.url
+		self.log(baseUrl)
+
+		for pId in range(2, PAGE_TIANJIN + 1):
+
+			urls = response.xpath("//div[contains(@id, 'reflshPage')]/ul/li/a[contains(@target, '_blank')]")
+			attrs = response.xpath("//div[contains(@id, 'reflshPage')]/ul/li")
+
+			if (len(urls) != len(attrs)):
+				itemCount = min(len(urls), len(attrs))
+			else:
+				itemCount = len(urls)
+			for i in range(0, itemCount):
+
+				url = urls[i]
+				attr = attrs[i]
+				names = url.xpath("text()").extract()
+				if (not len(names)):
+					continue
+
+				name = names[0].replace("\r", "").replace("\n", "").replace("\\", "或").replace("/", "或").replace(":", "").replace(" ", "").replace("\t", "")
+				if (not name or name == "<"): # no name specified
+					continue
+
+				if (not self.matchRules(name)):
+					continue
+
+				hrefs = url.xpath("@href").extract()
+				if (not hrefs):
+					continue
+
+				href = hrefs[0]
+				if (href == "#"):
+					continue
+
+				if (href[0] == "."):
+					newBaseUrl = baseUrl.split("index")[0]
+					subUrl = newBaseUrl + href[1:]
+				else:
+					subUrl = self.getParentUrl(baseUrl) + href
+
+				items = attr.xpath("span")
+				if (not items):
+					timeInfo = "NotSet"
+				else:
+					timeInfo = items[0].xpath("text()").extract()[0].replace("\r", "").replace("\n", "")
+
+				if (self.getTitle(subUrl)): # already read it
+					continue
+
+				title = {
+					"dir": self.getDir_byUrl(baseUrl),
+					"name": name,
+					"time": timeInfo
+				}
+				self.titles[subUrl] = title
+
+				yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
+
+			formdata = {"method": "view", "page": str(pId), "step": "1", "view": "Infor", "st": "1", "IdateQGE": ""}
+			yield FormRequest(url=response.url, formdata=formdata, callback=self.parser_tianjin)
