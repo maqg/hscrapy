@@ -27,6 +27,9 @@ scrapy crawl octlink &&
 
 cd dist &&
 python ./octlink_deploy.py  &&
+
+exit 0
+
 tar -zcf $CUR_DIR/dist.tgz * &&
 rm -rf /var/www/* &&
 rm -rf /var/www/.idea &&
