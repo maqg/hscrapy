@@ -414,7 +414,8 @@ class OctlinkSpider(scrapy.Spider):
 				"time": "NotSet"
 			}
 			self.titles[subUrl] = title
-			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
+			continue
+			#yield scrapy.http.Request(url=subUrl, callback=self.parse_content)
 
 	def parser_beijingcaizheng(self, response):
 
