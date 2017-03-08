@@ -83,7 +83,8 @@ class OctlinkSpider(scrapy.Spider):
 
 		PARSER_LIST = {
 			"hebeisheng": self.parser_hebeisheng,
-			"beijingcaizheng": self.parser_beijingcaizheng
+			"beijingcaizheng": self.parser_beijingcaizheng,
+			"hangzhou": self.parse_hangzhou,
 		}
 
 		if (not parserName):
@@ -301,6 +302,8 @@ class OctlinkSpider(scrapy.Spider):
 		for item in items:
 			datas = item.xpath("text()").extract()
 			data = "".join(datas).split(" ")[0].replace("\r", "").replace("\n", "").replace("\"", "").replace("[","").replace("/", "-").replace("]", "")
+			if (not data):
+				data = "".join(datas).replace(" ", "").replace("\r", "").replace("\n", "").replace("\"", "").replace("[","").replace("/", "-").replace("]", "")
 			if (data.startswith("20")):
 				publishTimes.append(data)
 		return publishTimes
@@ -346,9 +349,17 @@ class OctlinkSpider(scrapy.Spider):
 
 			if (href[0] == "."):
 				newBaseUrl = baseUrl.split("index")[0]
-				subUrl = newBaseUrl + href[1:]
+				tempHref = href[1:]
 			else:
-				subUrl = self.getParentUrl(baseUrl) + href
+				newBaseUrl = self.getParentUrl(baseUrl)
+				tempHref = href
+
+			if (newBaseUrl[-1] == '/'):
+				newBaseUrl = newBaseUrl[:-1]
+			if (tempHref[0] == '/'):
+				tempHref = tempHref[1:]
+
+			subUrl = newBaseUrl + "/" + tempHref
 
 			if (self.getTitle(subUrl)): # already read it
 				continue
@@ -564,3 +575,57 @@ class OctlinkSpider(scrapy.Spider):
 
 			formdata = {"method": "view", "page": str(pId), "step": "1", "view": "Infor", "st": "1", "IdateQGE": ""}
 			yield FormRequest(url=response.url, formdata=formdata, callback=self.parser_tianjin)
+
+	def parse_hangzhou(self, response):
+
+		baseUrl = response.url
+		self.log(baseUrl)
+
+		urlSettings = self.getUrlSettings(baseUrl)
+		if (not urlSettings):
+			self.log("no url settings found for url %s " % baseUrl)
+			return
+
+		urls = response.xpath(urlSettings["titleRegex"])
+		publishTimes = self.parse_publishtime(response, urlSettings["publishTimeRegex"])
+
+		titleCount = min(len(urls), len(publishTimes))
+
+		for i in range(0, titleCount):
+			url = urls[i]
+			publishTime = publishTimes[i]
+
+			names = url.xpath("text()").extract()
+			if (not len(names)):
+				continue
+
+			namebody = "".join(names).replace("\r", "").replace("\n", "")
+
+			name = namebody.replace("\r", "").replace("\n", "").replace("\\", "或").replace("/", "或").replace(":", "").replace(" ", "").replace("\t", "")
+
+			if (not name or name == "<"): # no name specified
+				continue
+
+			if (not self.matchRules(name)):
+				continue
+
+			hrefs = url.xpath("@href").extract()
+			if (not hrefs):
+				continue
+
+			href = hrefs[0]
+			if (href == "#"):
+				continue
+
+			subUrl = "http://cg.hzft.gov.cn" + "/" + href
+
+			if (self.getTitle(subUrl)): # already read it
+				continue
+
+			title = {
+				"dir": self.getDir_byUrl(baseUrl),
+				"name": name,
+				"time": publishTime,
+			}
+			self.titles[subUrl] = title
+			yield scrapy.http.Request(url=subUrl, callback=self.parse_content)

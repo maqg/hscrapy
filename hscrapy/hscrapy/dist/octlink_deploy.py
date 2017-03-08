@@ -55,6 +55,9 @@ def append_pages(submodule, todayList, today, site=None):
 	else:
 		baseDir = submodule["name"]
 
+	if not os.path.exists(baseDir):
+		return
+
 	for file in os.listdir(baseDir):
 		if (os.path.isdir(baseDir + os.sep + file)):
 			continue

@@ -1,0 +1,32 @@
+[
+   {
+    "name": "杭州市政府采购网",
+    "state": true,
+    "url": "http://cg.hzft.gov.cn/",
+    "parser": "hangzhou",
+    "publishTimeRegex": "//ul[@class='c_list_item']/li/span",
+    "titleRegex": "//ul[@class='c_list_item']/li/a",
+    "subUrls":[
+      {
+        "name": "招标公告",
+        "url": "http://cg.hzft.gov.cn/www/noticelist.do?noticetype=3"
+      },
+      {
+        "name": "采购预告",
+        "url": "http://cg.hzft.gov.cn/www/noticelist.do?noticetype=7"
+      },
+      {
+        "name": "征询公告",
+        "url": "http://cg.hzft.gov.cn/www/noticelist.do?noticetype=2"
+      },
+      {
+        "name": "更正公告",
+        "url": "http://cg.hzft.gov.cn/www/noticelist.do?noticetype=4,15"
+      },
+      {
+        "name": "成交公告",
+        "url": "http://cg.hzft.gov.cn/www/noticelist.do?noticetype=5,6"
+      }
+    ]
+  }
+]

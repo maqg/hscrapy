@@ -1,0 +1,40 @@
+[
+   {
+    "name": "南京市政府采购网",
+    "state": true,
+    "url": "http://www.njgp.gov.cn/",
+    "publishTimeRegex": "//div[@class='R_cont_detail']/ul/li",
+    "titleRegex": "//div[@class='R_cont_detail']/ul/li/a",
+    "subUrls":[
+      {
+        "name": "集中采购公告",
+        "pages": 5,
+        "url": "http://www.njgp.gov.cn/cgxx/cggg/jzcgjg/index_%d.html"
+      },
+      {
+        "name": "部门采购公告",
+        "pages": 5,
+        "url": "http://www.njgp.gov.cn/cgxx/cggg/bmjzcgjg/index_%d.html"
+      },
+      {
+        "name": "区级采购公告",
+        "pages": 5,
+        "url": "http://www.njgp.gov.cn/cgxx/cggg/qjcgjg/index_%d.html"
+      },
+      {
+        "name": "变更公告",
+        "pages": 5,
+        "url": "http://www.njgp.gov.cn/cgxx/cgfsbg/index_%d.html"
+      },
+      {
+        "name": "结果公告",
+        "pages": 5,
+        "url": "http://www.njgp.gov.cn/cgxx/cgcjjg/index_%d.html"
+      },
+      {
+        "name": "变更公告",
+        "url": "http://www.njgp.gov.cn/cgxx/htgs/"
+      }
+    ]
+  }
+]

@@ -1,0 +1,26 @@
+[
+   {
+    "name": "江苏政府采购网",
+    "state": true,
+    "url": "http://www.ccgp-jiangsu.gov.cn/pub/jszfcg/",
+    "publishTimeRegex": "//div[@class='list_list']/ul/li",
+    "titleRegex": "//div[@class='list_list']/ul/li/a",
+    "subUrls":[
+      {
+        "name": "招标公告",
+        "pages": 5,
+        "url": "http://www.ccgp-jiangsu.gov.cn/pub/jszfcg/cgxx/cggg/index_%d.html"
+      },
+      {
+        "name": "采购预告",
+        "pages": 5,
+        "url": "http://www.ccgp-jiangsu.gov.cn/pub/jszfcg/cgxx/cgyg/index_%d.html"
+      },
+      {
+        "name": "成交公告",
+        "pages": 5,
+        "url": "http://www.ccgp-jiangsu.gov.cn/pub/jszfcg/cgxx/cjgg/index_%d.html"
+      }
+    ]
+  }
+]
