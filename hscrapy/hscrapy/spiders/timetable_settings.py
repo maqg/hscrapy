@@ -526,6 +526,17 @@ timeTableSettings = {
 			}
 		],
 	},
+	u"16号线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往北安河方向",
+			},
+			{
+				"direction": u"往西苑方向"
+			}
+		]
+	},
 }
 
 

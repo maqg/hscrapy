@@ -5585,6 +5585,18 @@
       }, 
       {
         "length": 1221, 
+        "lastTrain": [
+          {
+            "direction": "往善各庄方向", 
+            "last": "23:09", 
+            "first": "5:59"
+          }, 
+          {
+            "direction": "往金台路方向", 
+            "last": "22:52", 
+            "first": "5:22"
+          }
+        ], 
         "id": 12141, 
         "name": "朝阳公园"
       }, 
@@ -5780,13 +5792,13 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "23:07", 
-            "first": "5:34"
+            "last": "23:08", 
+            "first": "5:35"
           }, 
           {
             "direction": "往清华东路西口方向（半程,终点马泉营）", 
             "last": "——", 
-            "first": "5:34"
+            "first": "5:35"
           }, 
           {
             "direction": "往俸伯方向", 
@@ -5802,13 +5814,13 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "23:04", 
-            "first": "5:32"
+            "last": "23:05", 
+            "first": "5:33"
           }, 
           {
             "direction": "往清华东路西口方向（半程,终点马泉营）", 
             "last": "——", 
-            "first": "5:32"
+            "first": "5:33"
           }, 
           {
             "direction": "往俸伯方向", 
@@ -5824,13 +5836,13 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "23:02", 
-            "first": "5:29"
+            "last": "23:03", 
+            "first": "5:30"
           }, 
           {
             "direction": "往清华东路西口方向（半程,终点马泉营）", 
             "last": "——", 
-            "first": "5:29"
+            "first": "5:30"
           }, 
           {
             "direction": "往俸伯方向", 
@@ -5846,7 +5858,7 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "22:59", 
+            "last": "23:00", 
             "first": "5:27"
           }, 
           {
@@ -5868,13 +5880,13 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "22:57", 
-            "first": "5:25"
+            "last": "22:58", 
+            "first": "5:26"
           }, 
           {
             "direction": "往清华东路西口方向（半程,终点马泉营）", 
             "last": "——", 
-            "first": "5:25"
+            "first": "5:26"
           }, 
           {
             "direction": "往俸伯方向", 
@@ -5890,13 +5902,13 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "22:54", 
-            "first": "5:22"
+            "last": "22:55", 
+            "first": "5:23"
           }, 
           {
             "direction": "往清华东路西口方向（半程,终点马泉营）", 
             "last": "——", 
-            "first": "5:22"
+            "first": "5:23"
           }, 
           {
             "direction": "往俸伯方向", 
@@ -5912,7 +5924,7 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "22:51", 
+            "last": "22:52", 
             "first": "5:19"
           }, 
           {
@@ -5922,8 +5934,8 @@
           }, 
           {
             "direction": "往俸伯方向", 
-            "last": "23:32", 
-            "first": "5:59"
+            "last": "23:33", 
+            "first": "6:00"
           }
         ], 
         "id": 13071, 
@@ -5934,13 +5946,13 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "22:48", 
-            "first": "5:15"
+            "last": "22:49", 
+            "first": "5:16"
           }, 
           {
             "direction": "往清华东路西口方向（半程,终点马泉营）", 
             "last": "——", 
-            "first": "5:15"
+            "first": "5:16"
           }, 
           {
             "direction": "往俸伯方向", 
@@ -5956,18 +5968,18 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "——", 
-            "first": "——"
+            "last": "22:46", 
+            "first": "5:13"
           }, 
           {
             "direction": "往清华东路西口方向（半程,终点马泉营）", 
             "last": "——", 
-            "first": "——"
+            "first": "5:13"
           }, 
           {
             "direction": "往俸伯方向", 
-            "last": "——", 
-            "first": "——"
+            "last": "23:39", 
+            "first": "6:06"
           }
         ], 
         "id": 13091, 
@@ -5988,8 +6000,8 @@
           }, 
           {
             "direction": "往俸伯方向", 
-            "last": "23:41", 
-            "first": "6:08"
+            "last": "23:42", 
+            "first": "6:09"
           }
         ], 
         "id": 13101, 
@@ -6000,7 +6012,7 @@
         "lastTrain": [
           {
             "direction": "往清华东路西口方向（全程）", 
-            "last": "22:39", 
+            "last": "22:40", 
             "first": "5:07"
           }, 
           {
@@ -6010,7 +6022,7 @@
           }, 
           {
             "direction": "往俸伯方向", 
-            "last": "23:44", 
+            "last": "23:45", 
             "first": "5:30"
           }
         ], 
@@ -6032,7 +6044,7 @@
           }, 
           {
             "direction": "往俸伯方向", 
-            "last": "23:48", 
+            "last": "23:49", 
             "first": "5:34"
           }
         ], 
@@ -6076,7 +6088,7 @@
           }, 
           {
             "direction": "往俸伯方向", 
-            "last": "23:54", 
+            "last": "23:55", 
             "first": "5:40"
           }
         ], 
@@ -6098,7 +6110,7 @@
           }, 
           {
             "direction": "往俸伯方向", 
-            "last": "23:58", 
+            "last": "23:59", 
             "first": "5:44"
           }
         ], 
@@ -6142,7 +6154,7 @@
           }, 
           {
             "direction": "往俸伯方向", 
-            "last": "0:06", 
+            "last": "0:07", 
             "first": "5:52"
           }
         ], 
@@ -6704,7 +6716,7 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "22:45", 
+            "last": "23:02", 
             "first": "6:00"
           }, 
           {
@@ -6721,12 +6733,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "22:48", 
+            "last": "23:06", 
             "first": "6:03"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:36", 
+            "last": "22:53", 
             "first": "5:51"
           }
         ], 
@@ -6738,12 +6750,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "22:50", 
+            "last": "23:08", 
             "first": "6:05"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:34", 
+            "last": "22:51", 
             "first": "5:49"
           }
         ], 
@@ -6755,12 +6767,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "22:54", 
+            "last": "23:11", 
             "first": "6:09"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:30", 
+            "last": "22:47", 
             "first": "5:45"
           }
         ], 
@@ -6772,12 +6784,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "22:56", 
+            "last": "23:14", 
             "first": "6:11"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:28", 
+            "last": "22:45", 
             "first": "5:43"
           }
         ], 
@@ -6789,12 +6801,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "22:58", 
+            "last": "23:16", 
             "first": "6:13"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:26", 
+            "last": "22:43", 
             "first": "5:41"
           }
         ], 
@@ -6806,12 +6818,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "23:01", 
+            "last": "23:18", 
             "first": "6:16"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:23", 
+            "last": "22:40", 
             "first": "5:38"
           }
         ], 
@@ -6823,12 +6835,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "23:03", 
+            "last": "23:21", 
             "first": "6:18"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:21", 
+            "last": "22:38", 
             "first": "5:36"
           }
         ], 
@@ -6840,12 +6852,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "23:05", 
+            "last": "23:23", 
             "first": "6:20"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:19", 
+            "last": "22:36", 
             "first": "5:34"
           }
         ], 
@@ -6857,12 +6869,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "23:09", 
+            "last": "23:26", 
             "first": "6:24"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:16", 
+            "last": "22:33", 
             "first": "5:31"
           }
         ], 
@@ -6874,12 +6886,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "23:12", 
+            "last": "23:29", 
             "first": "6:27"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:13", 
+            "last": "22:30", 
             "first": "5:28"
           }
         ], 
@@ -6891,12 +6903,12 @@
         "lastTrain": [
           {
             "direction": "往次渠方向", 
-            "last": "23:14", 
+            "last": "23:32", 
             "first": "6:29"
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:10", 
+            "last": "22:27", 
             "first": "5:25"
           }
         ], 
@@ -6913,7 +6925,7 @@
           }, 
           {
             "direction": "往宋家庄方向", 
-            "last": "22:08", 
+            "last": "22:25", 
             "first": "5:23"
           }
         ], 
@@ -7468,5 +7480,182 @@
     ], 
     "name": "机场线", 
     "id": 19
+  }, 
+  {
+    "stations": [
+      {
+        "length": 2810, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "22:55", 
+            "first": "6:00"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "——", 
+            "first": "——"
+          }
+        ], 
+        "id": 100001, 
+        "name": "西苑"
+      }, 
+      {
+        "length": 1520, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "——", 
+            "first": "——"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "——", 
+            "first": "——"
+          }
+        ], 
+        "id": 100011, 
+        "name": "农大南路"
+      }, 
+      {
+        "length": 2341, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "23:01", 
+            "first": "6:06"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "22:54", 
+            "first": "5:49"
+          }
+        ], 
+        "id": 100021, 
+        "name": "马连洼"
+      }, 
+      {
+        "length": 2000, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "23:04", 
+            "first": "6:09"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "22:51", 
+            "first": "5:46"
+          }
+        ], 
+        "id": 100031, 
+        "name": "西北旺"
+      }, 
+      {
+        "length": 1299, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "23:08", 
+            "first": "6:13"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "22:47", 
+            "first": "5:42"
+          }
+        ], 
+        "id": 100041, 
+        "name": "永丰南"
+      }, 
+      {
+        "length": 2010, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "23:11", 
+            "first": "6:16"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "22:44", 
+            "first": "5:39"
+          }
+        ], 
+        "id": 100051, 
+        "name": "永丰"
+      }, 
+      {
+        "length": 2420, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "23:15", 
+            "first": "6:20"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "22:40", 
+            "first": "5:35"
+          }
+        ], 
+        "id": 100061, 
+        "name": "屯佃"
+      }, 
+      {
+        "length": 2298, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "23:18", 
+            "first": "6:23"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "22:37", 
+            "first": "5:32"
+          }
+        ], 
+        "id": 100071, 
+        "name": "稻香湖路"
+      }, 
+      {
+        "length": 2615, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "23:22", 
+            "first": "6:27"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "22:33", 
+            "first": "5:28"
+          }
+        ], 
+        "id": 100081, 
+        "name": "温阳路"
+      }, 
+      {
+        "length": 0, 
+        "lastTrain": [
+          {
+            "direction": "往北安河方向", 
+            "last": "——", 
+            "first": "——"
+          }, 
+          {
+            "direction": "往西苑方向", 
+            "last": "22:30", 
+            "first": "5:25"
+          }
+        ], 
+        "id": 100091, 
+        "name": "北安河"
+      }
+    ], 
+    "id": 100, 
+    "name": "16号线", 
+    "timeTableDesc": ""
   }
 ]

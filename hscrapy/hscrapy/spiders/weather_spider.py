@@ -2,74 +2,15 @@
 
 
 import os
-
 import scrapy
 
 from hscrapy.settings import DEST_DIR
-from hscrapy.spiders.timetable_settings import getTimeTableSettings
+from hscrapy.spiders.timetable_settings import timeTableSettings, getTimeTableSettings
 from hscrapy.utils.commonUtil import transToStr
 
-LINE16 = {
-    "timeTableDesc": "",
-    "stations": [
-      {
-        "length": 2810,
-        "id": 100001,
-        "name": "西苑"
-      },
-      {
-        "length": 1520,
-        "id": 100011,
-        "name": "农大南路"
-      },
-      {
-        "length": 2341,
-        "id": 100021,
-        "name": "马连洼"
-      },
-      {
-        "length": 2000,
-        "id": 100031,
-        "name": "西北旺"
-      },
-      {
-        "length": 1299,
-        "id": 100041,
-        "name": "永丰南"
-      },
-      {
-        "length": 2010,
-        "id": 100051,
-        "name": "永丰"
-      },
-      {
-        "length": 2420,
-        "id": 100061,
-        "name": "屯佃"
-      },
-      {
-        "length": 2298,
-        "id": 100071,
-        "name": "稻香湖路"
-      },
-      {
-        "length": 2615,
-        "id": 100081,
-        "name": "温阳路"
-      },
-      {
-        "length": 0,
-        "id": 100091,
-        "name": "北安河"
-      }
-    ],
-    "id": 100,
-    "name": "16号线"
-  }
 
-
-class SubwaySpider(scrapy.Spider):
-	name = "subway"
+class WeatherSpider(scrapy.Spider):
+	name = "weather"
 
 	line4Checked = False
 
@@ -251,5 +192,3 @@ class SubwaySpider(scrapy.Spider):
 
 			distances = table.xpath("tbody/tr")
 			self.processDistance(distances, line)
-
-		self.lines.append(LINE16)
