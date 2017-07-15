@@ -252,4 +252,5 @@ class SubwaySpider(scrapy.Spider):
 			distances = table.xpath("tbody/tr")
 			self.processDistance(distances, line)
 
-		self.lines.append(LINE16)
+			if lineName == "15号线":
+				self.lines.append(LINE16)
