@@ -41,33 +41,33 @@
     "name": "北京市政府采购中心",
     "url": "http://www.bgpc.gov.cn",
     "state": true,
-    "publishTimeRegex": "//ul/li/span[@class='news_time']",
-    "titleRegex": "//ul/li/span[@class='news_title']/a",
+    "publishTimeRegex": "//div/li/span[contains(.,'20')]",
+    "titleRegex": "//div/li/a",
     "subUrls": [
       {
         "name": "招标公告",
         "pages": 5,
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/29/page/%d"
+        "url": "http://www.bgpc.gov.cn/defaults/news/news/page/%d/tid/2"
       },
       {
         "name": "直采（非招标公告）",
         "pages": 5,
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/31/page/%d"
+        "url": "http://www.bgpc.gov.cn/defaults/news/news/page/%d/tid/3"
       },
       {
         "name": "更正公告",
         "pages": 5,
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/30/page/%d"
+        "url": "http://www.bgpc.gov.cn/defaults/news/news/page/%d/tid/4"
       },
       {
         "name": "中标公告",
         "pages": 5,
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/32/page/%d"
+        "url": "http://www.bgpc.gov.cn/defaults/news/news/page/%d/tid/5"
       },
       {
         "name": "废标公告",
         "pages": 5,
-        "url": "http://www.bgpc.gov.cn/news/news/nt_id/33/page/%d"
+        "url": "http://www.bgpc.gov.cn/defaults/news/news/page/%d/tid/6"
       }
     ]
   },
@@ -75,7 +75,7 @@
     "name": "中国政府采购网",
     "url": "http://www.ccgp.gov.cn",
     "state": true,
-    "publishTimeRegex": "//ul/li/span[contains(.,'20')]",
+    "publishTimeRegex": "//ul/li/em[contains(.,'20')]",
     "titleRegex": "//ul/li/a",
     "subUrls": [
       {
