@@ -7,7 +7,7 @@ import scrapy
 
 from hscrapy.settings import DEST_DIR
 from hscrapy.spiders.timetable_settings import getTimeTableSettings
-from hscrapy.utils.commonUtil import transToStr
+from hscrapy.utils.commonUtil import transToStr, fileToObj
 
 LINE16 = {
     "timeTableDesc": "",
@@ -77,10 +77,14 @@ class SubwaySpider(scrapy.Spider):
 
 	dist_file = DEST_DIR + os.sep + "subway.json"
 
+	source_file = DEST_DIR + os.sep + "subway.ori.json"
+
+
 	lines = []
 
 	url_timetable = "http://www.bjsubway.com/e/action/ListInfo/?classid=39&ph=1"
 	url_disance = "http://www.bjsubway.com/station/zjgls/"
+
 
 	def write(self):
 
@@ -91,11 +95,12 @@ class SubwaySpider(scrapy.Spider):
 
 	def start_requests(self):
 
-		yield scrapy.http.Request(url=self.url_disance, callback=self.parseDistance)
+		self.lines = fileToObj(self.source_file)
+
+		#yield scrapy.http.Request(url=self.url_disance, callback=self.parseDistance)
 
 		yield scrapy.http.Request(url=self.url_timetable, callback=self.parseTimeTable)
 
-		self.write()
 
 	def findStation(self, line, stationName):
 		for station in line["stations"]:
@@ -182,8 +187,8 @@ class SubwaySpider(scrapy.Spider):
 			if (timeTableSettings):
 				self.processTimeTable(time_tables, line, timeTableSettings)
 
-			if (lineName == "机场线"):
-				self.write()
+		if (lineName == "燕房线"):
+			self.write()
 
 	def processDistance(self, distances, line):
 		lastStationName = "NotSet"

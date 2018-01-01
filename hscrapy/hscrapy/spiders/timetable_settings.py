@@ -400,6 +400,28 @@ timeTableSettings = {
 			}
 		],
 	},
+	u"燕房线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往燕山方向",
+			},
+			{
+				"direction": u"往阎村东方向"
+			}
+		],
+	},
+	u"S1线": {
+		"func": timetable_handler_normal,
+		"titles": [
+			{
+				"direction": u"往石厂方向",
+			},
+			{
+				"direction": u"往金安桥方向"
+			}
+		],
+	},
 	u"亦庄线": {
 		"func": timetable_handler_normal,
 		"titles": [
