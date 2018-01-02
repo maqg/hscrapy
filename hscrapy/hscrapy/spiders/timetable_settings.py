@@ -112,18 +112,18 @@ def timetable_handler_changeping(timeValues, lastTrain, titles):
 	item0 = {
 		"direction": titles[0]["direction"],
 		"first": values[0],
-		"last": values[2]
+		"last": values[1]
 	}
 
 	item1 = {
 		"direction": titles[1]["direction"],
-		"first": values[0],
+		"first": values[2],
 		"last": values[3]
 	}
 
 	item2 = {
 		"direction": titles[2]["direction"],
-		"first": values[1],
+		"first": values[2],
 		"last": values[4]
 	}
 
