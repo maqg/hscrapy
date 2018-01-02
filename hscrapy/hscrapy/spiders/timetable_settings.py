@@ -368,13 +368,13 @@ timeTableSettings = {
 		"func": timetable_handler_changeping,
 		"titles": [
 			{
+				"direction": u"往昌平西山口方向",
+			},
+			{
 				"direction": u"往西二旗方向（全程）",
 			},
 			{
 				"direction": u"往西二旗方向（半程,终点朱辛庄）",
-			},
-			{
-				"direction": u"往昌平西山口方向",
 			}
 		]
 	},
