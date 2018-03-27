@@ -1,0 +1,15 @@
+[
+   {
+    "name": "内蒙古自治区政府采购网",
+    "state": true,
+    "url": "http://www.nmgp.gov.cn/",
+    "parser": "neimenggu",
+    "subUrls":[
+      {
+        "name": "招标公告",
+        "pages": 5,
+        "url": "http://www.nmgp.gov.cn/category/cggg"
+      }
+    ]
+  }
+]

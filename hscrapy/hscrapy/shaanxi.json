@@ -1,0 +1,16 @@
+[
+   {
+    "name": "陕西省政府采购网",
+    "state": true,
+    "url": "http://www.ccgp-shaanxi.gov.cn/",
+    "publishTimeRegex": "//tr/td[contains(.,'20')]",
+    "titleRegex": "//tr/td/a",
+    "subUrls":[
+      {
+        "name": "招标公告-省级",
+        "pages": 2,
+        "url": "http://www.ccgp-shaanxi.gov.cn/zbAll_view.jsp?ClassName=C0001&pages=%d"
+      }
+    ]
+  }
+]
