@@ -528,5 +528,39 @@
         "url": "http://www.hngp.gov.cn/henan/ggcx?appCode=H60&channelCode=0103&bz=0&pageSize=10&pageNo=%d"
       }
     ]
+  },
+  {
+    "name": "山西省政府采购网",
+    "state": true,
+    "url": "http://www.ccgp-shanxi.gov.cn/",
+    "publishTimeRegex": "//tbody/tr/td[contains(.,'20')]",
+    "titleRegex": "//tbody/tr/td/a",
+    "subUrls":[
+      {
+        "name": "招标公告",
+        "pages": 5,
+        "url": "http://www.ccgp-shanxi.gov.cn/view.php?app=&type=&nav=100&page=%d"
+      },
+      {
+        "name": "变更公告",
+        "pages": 5,
+        "url": "http://www.ccgp-shanxi.gov.cn/view.php?app=&type=&nav=105&page=%d"
+      },
+      {
+        "name": "结果公告",
+        "pages": 5,
+        "url": "http://www.ccgp-shanxi.gov.cn/view.php?app=&type=&nav=104&page=%d"
+      },
+      {
+        "name": "单一来源公示",
+        "pages": 5,
+        "url": "http://www.ccgp-shanxi.gov.cn/view.php?app=&type=&nav=116&page=%d"
+      },
+      {
+        "name": "合同公示",
+        "pages": 5,
+        "url": "http://www.ccgp-shanxi.gov.cn/view.php?app=&type=&nav=153&page=%d"
+      }
+    ]
   }
 ]
